@@ -1,0 +1,423 @@
+---
+title: "STA303 Final Project R codes and outputs"
+author: "Wei Cui 1004536479"
+date: '2020-08-23'
+output:
+  pdf_document: 
+    keep_tex: yes
+    latex_engine: xelatex
+  html_document:
+    df_print: paged
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=TRUE}
+library(tidyverse)
+library(naniar)
+
+# Clean up the environment
+rm(list = ls())
+
+# Load the diabetes dataset
+diabetes <- read.csv("diabetes.csv", header = TRUE)
+
+# Removes first column (since it is redundant)
+diabetes <- diabetes[,-1]
+```
+
+###Data Preparation & Preprocessing
+
+```{r, echo=TRUE}
+# Data Preparation & Preprocessing:
+
+# Displaying first 6 rows of data using "head" command
+head(diabetes)
+
+# Checking data types and showing different levels of each variable
+# Get familiar with each covariates
+str(diabetes)
+
+# A brief summary of the dataset
+summary(diabetes)
+
+# Change column type from numerical to categorical/nominal
+diabetes$discharge_disposition_id <- factor(diabetes$discharge_disposition_id)
+diabetes$admission_type_id <- factor(diabetes$admission_type_id)
+
+# Removing duplicate patients' encounter for GLM model
+# only take the first observation to avoid bias and ensure independence of observations
+diabetes <- diabetes[!duplicated(diabetes$patient_nbr),]
+
+# Since we remove all duplicate patients' encounter. For variable encounter_num,
+# it only has 1 value, i.e. 1. Therefore, this variable has zero variance
+# and thus we drop this variable.
+diabetes <- diabetes %>% select(-encounter_num)
+
+# As stated in our final_project.pdf, ‘encounter_id’, ‘admission_source_id’, 
+# 'patient_nbr', ‘payer_code’ are some identification variables.
+# Therefore these variables should not be considered as covariates.
+diabetes <- diabetes %>% select(-encounter_id, -admission_source_id, -payer_code, -patient_nbr)
+
+# Checking missing values in diabetes dataset for 
+# column wise and compute the total NA counts for each variable
+NA_Count <- sapply(diabetes, function(y) sum(length(which(is.na(y)))))
+NA_Count <- data.frame(NA_Count)
+NA_Count
+
+# For convenience of visualization, we plot the 
+# missing percentage of each variable
+gg_miss_var(diabetes, show_pct = TRUE)
+
+# From the plot we see that variable weight contains approximate 98% of the missing 
+# values, thus we decide to drop the variable weight.
+diabetes <- diabetes %>% select(-weight)
+
+# Although variable medical_specialty contains approximate 50% of the missing values
+#, it may still be a significant covariate for predicting readmission. Therefore,
+# we keep it but reduce to fewer categories based on reference paper:
+# Beata Strack,1 Jonathan P. DeShazo,2 Chris Gennings,3 Juan L. Olmo,4 Sebastian Ventura,
+# 4 Krzysztof J. Cios,1,5 and John N. Clore6 (2014) 
+# Impact of HbA1c Measurement on Hospital Readmission Rates: Analysis of 70,000 
+# Clinical Database Patient Records
+diabetes$medical_specialty <- factor(ifelse(diabetes$medical_specialty == "Family/GeneralPractice", 'General Practice', ifelse(diabetes$medical_specialty %in% c("Cardiology", "Cardiology-Pediatric", "Gastroenterology", "Endocrinology", "Endocrinology-Metabolism", "Hematology", "Hematology/Oncology", "InternalMedicine", "Nephrology", "InfectiousDiseases", "Oncology", "Proctology", "Pulmonology", "Rheumatology", "SportsMedicine", "Urology"), 'Internal Medicine', ifelse(diabetes$medical_specialty == "Emergency/Trauma", 'Emergency', ifelse(diabetes$medical_specialty %in% c("Orthopedics", "Orthopedics-Reconstructive", "Osteopath", "Otolaryngology", "Surgeon", "Surgery-Cardiovascular", "Surgery-Cardiovascular/Thoracic", "Surgery-Colon&Rectal", "Surgery-General", "Surgery-Maxillofacial", "Surgery-Neuro", "Surgery-Pediatric", "Surgery-Plastic", "Surgery-PlasticwithinHeadandNeck", "Surgery-Thoracic", "Surgery-Vascular", "SurgicalSpecialty"), 'Surgery', 'Other')))))
+
+# Add another factor level called "Missing" for medical_specialty to deal with
+# NAs
+diabetes$medical_specialty <- factor(diabetes$medical_specialty, levels=c(levels(diabetes$medical_specialty), "Missing"))
+diabetes$medical_specialty[is.na(diabetes$medical_specialty)] <- "Missing"
+
+levels(diabetes$medical_specialty)
+
+# Since gender has Unknown/Invalid type, so we compute its missing values separately
+gender_NA_Count <- sum(ifelse(diabetes$gender == 'Unknown/Invalid', 1, 0))
+gender_NA_Count <- data_frame(gender_NA_Count)
+gender_NA_Count
+
+# Remove 3 observations with Unknown/Invalid values in gender 
+diabetes <- diabetes[diabetes$gender != 'Unknown/Invalid',]
+diabetes$gender <- factor(diabetes$gender)
+
+# Also remove observations with missing values(NA) for better modeling
+diabetes <- na.omit(diabetes)
+
+# Visualizing a brief summary of variable race
+table(diabetes$race)
+sum(diabetes['race'] == 'Caucasian')/nrow(diabetes) 
+sum(diabetes['race'] == 'AfricanAmerican')/nrow(diabetes)
+
+# From the above brief summary, since the data contains about 76% Caucasians and 19% AfricanAmerican, then all other levels are imputed to a new level called Other.
+levels(diabetes$race)[!levels(diabetes$race) %in% c('Caucasian', 'AfricanAmerican') ] <- "Other"
+levels(diabetes$race)
+
+# From given IDs_mapping.csv, we know that discharge disposition 
+# id = 11, 13, 14, 19, 20, 21 are patients coded as deceased or sent to hospice.
+# Therefore, we remove them since the patients cannot be readmitted to the hospital
+diabetes <- subset(diabetes, discharge_disposition_id != 11 & discharge_disposition_id != 13 & discharge_disposition_id != 14 & discharge_disposition_id != 19 & discharge_disposition_id != 20 & discharge_disposition_id != 21)
+
+# Some categories with large proportion within variable discharge_disposition_id
+sum(diabetes$discharge_disposition_id == 1)/nrow(diabetes)
+sum(diabetes$discharge_disposition_id == 3)/nrow(diabetes)
+sum(diabetes$discharge_disposition_id == 6)/nrow(diabetes)
+
+# Regroup the variable discharge_disposition_id into four new categories:
+# 1.Discharged to home 2.Discharged/transferred to SNF 3.Discharged/transferred 
+# to home with home health service
+diabetes$discharge_disposition_id <- factor(ifelse(diabetes$discharge_disposition_id == 1, 'Home', ifelse(diabetes$discharge_disposition_id == 3, 'SNF', ifelse(diabetes$discharge_disposition_id == 6, 'Home with home health service', 'Other'))))
+levels(diabetes$discharge_disposition_id)
+
+# Rename column discharge_disposition_id to Discharge
+names(diabetes)[names(diabetes)=='discharge_disposition_id'] <- 'Discharge'
+
+# Referenced on paper:
+# Beata Strack,1 Jonathan P. DeShazo,2 Chris Gennings,3 Juan L. Olmo,4 Sebastian Ventura,
+# 4 Krzysztof J. Cios,1,5 and John N. Clore6 (2014) 
+# Impact of HbA1c Measurement on Hospital Readmission Rates: Analysis of 70,000 
+# Clinical Database Patient Records
+# We reduce the categories within variable age into 3 categories: 
+# "<30", [30, 60), [60, 100)
+diabetes$age <- factor(ifelse(diabetes$age %in% c('[0-10)', '[10-20)', '[20-30)'), '<30', ifelse(diabetes$age %in% c('[30-40)',  '[40-50)',  '[50-60)'), '[30, 60)', '[60, 100)')))
+levels(diabetes$age)
+
+# Examide and citoglipton only have 1 value, so we will not use these variables
+diabetes <- diabetes %>% select(-examide, -citoglipton)
+
+# Based on paper:
+# Ahmad Hammoudeha,d,*, Ghazi Al-Naymata, Ibrahim Ghannamb, Nadim Obieda,c (2018)
+# Predicting Hospital Readmission among Diabetics using Deep Learning
+# We remove all drugs variables and based on these variables, we add 2 additional 
+# features: the first feature is the number of medications(num_of_med) and 
+# the second feature is the number of changes(num_of_changes) in the medications. 
+# Both features are extracted from the drug attributes.
+drugs <- c('metformin', 'repaglinide', 'nateglinide', 'chlorpropamide', 'glimepiride', 'glipizide', 'glyburide', 'pioglitazone', 'rosiglitazone', 'acarbose', 'miglitol', 'insulin', 'glyburide.metformin', 'tolazamide', 'metformin.pioglitazone','metformin.rosiglitazone', 'glimepiride.pioglitazone', 'glipizide.metformin', 'troglitazone', 'tolbutamide', 'acetohexamide')
+
+# Initialize two new added variables 
+diabetes$num_of_med <- 0
+diabetes$num_of_changes <- 0
+
+# For loop
+for(drug in drugs){
+  # loop through to add 1 for taking a medication
+  diabetes$num_of_med <- ifelse(diabetes[drug] != 'No', diabetes$num_of_med + 1, diabetes$num_of_med)
+  
+  # loop through to add 1 for there's a dosage change in the medication
+  diabetes$num_of_changes <- ifelse((diabetes[drug] == 'Up' | diabetes[drug] == 'Down'), diabetes$num_of_changes + 1, diabetes$num_of_changes)
+}
+
+# Remove all drugs variables
+diabetes <- diabetes %>% select(-metformin, -repaglinide, -nateglinide, -chlorpropamide, -glimepiride, -glipizide, -glyburide, -pioglitazone, -rosiglitazone, -acarbose, -miglitol, -insulin, -glyburide.metformin, -tolazamide, -metformin.pioglitazone, -metformin.rosiglitazone, -glimepiride.pioglitazone, -glipizide.metformin, -troglitazone, -tolbutamide, -acetohexamide)
+
+# To reduce variables, we regroup num_lab_procedures and num_procedures into 
+# a single variable num_procedures
+diabetes$num_procedures <- diabetes$num_lab_procedures + diabetes$num_procedures
+diabetes <- diabetes %>% select(-num_lab_procedures)
+
+# Regroup and recode variables number_outpatient, number_emergency and number_inpatient into a new variable called num_visits
+diabetes$num_visits <- diabetes$number_outpatient + diabetes$number_emergency + diabetes$number_inpatient
+diabetes <- diabetes %>% select(-number_outpatient, -number_emergency, -number_inpatient)
+
+# Based on paper:
+# Beata Strack,1 Jonathan P. DeShazo,2 Chris Gennings,3 Juan L. Olmo,4 Sebastian Ventura,
+# 4 Krzysztof J. Cios,1,5 and John N. Clore6 (2014) 
+# Impact of HbA1c Measurement on Hospital Readmission Rates: Analysis of 70,000 Clinical 
+# Database Patient Records
+# We combine and recode variable A1Cresult and change into 4 new groups:
+# (1) no HbA1c test performed, (2) HbA1c performed and in normal range, 
+# (3) HbA1c performed and the result is greater than 8% with no change in diabetic medications, 
+# and (4) HbA1c performed, result is greater than 8%, and diabetic medication was changed.
+diabetes$HbA1c <- factor(ifelse(diabetes$A1Cresult == 'None', 1,
+                                ifelse(diabetes$A1Cresult == 'Norm' | diabetes$A1Cresult == '>7', 2,
+                                       ifelse(diabetes$A1Cresult == '>8' & diabetes$change == 'No', 3, 4))))
+
+# After we combine and recode variable A1Cresult and change, remove original variables:
+# A1Cresult and change
+diabetes <- diabetes %>% select(-A1Cresult, -change)
+
+# Since 30 days was chosen based on criteria often used by funding agencies,
+# we are primarily interested in factors that lead to early readmission and also 
+# to reduce our problem to a binary classification, then we defined the readmission 
+# attribute (out-come) as having two values: 
+# “readmitted,” if the patient was # readmitted within 30 days of discharge 
+# or “otherwise,” which covers both readmission after 30 days and no readmission at all.
+diabetes$readmitted = factor(ifelse(diabetes$readmitted == "<30", "readmission", "no readmission"))
+
+# Create train and test datasets as specified and set my student number as seed
+set.seed(1004536479)
+
+# Split original dataset into two subsets: train and test
+test_idx <- sample(nrow(diabetes), 20000)
+test <- diabetes[test_idx,]
+train <- diabetes[-test_idx,]
+
+# Note: Since we have already removed all duplicate patients' encounter, then
+# our observations in the test data are a random selection of 20000 patients
+```
+
+###Exploration analysis
+
+```{r, echo=TRUE}
+# Data Exploration Analysis
+
+library(ggplot2)
+
+# Distribution of Readmission
+ggplot(train, aes(readmitted)) + 
+  ggtitle("Distribution of Readmission") + 
+  geom_bar()
+
+# Readmission/No readmission proportion based on gender
+ggplot(train, aes(x=gender, fill = readmitted)) +
+  stat_count(width = 0.5) +
+  ggtitle ("Readmission/No readmission proportion based on gender") +
+  xlab("gender") +
+  ylab("total count") +
+  labs(fill = "Readmission or not")
+
+# Readmission/No readmission proportion based on age
+ggplot(train, aes(x=age, fill = readmitted)) +
+  stat_count(width = 0.5) +
+  ggtitle ("Readmission/No readmission proportion based on age") +
+  xlab("age") +
+  ylab("total count") +
+  labs(fill = "Readmission or not")
+
+# Readmission/No readmission proportion based on Length.of.Stay
+ggplot(train, aes(Length.of.Stay, color = readmitted)) +
+  geom_freqpoly(binwidth = 1)
+
+# Readmission/No readmission proportion based on admission_type_id
+as_tibble(train) %>% ggplot(aes(x=admission_type_id,fill=readmitted)) + stat_count(binwidth=1) +
+  geom_density()
+
+# Readmission/No readmission proportion based on num_procudures
+ggplot(train, aes(x=num_procedures,color=readmitted))+geom_freqpoly()+geom_histogram(alpha=0.2)
+
+# Readmission/No readmission proportion based on HbA1c
+as_tibble(train) %>% ggplot(aes(x=HbA1c,fill=readmitted)) + stat_count(binwidth = 5)
+```
+
+
+
+
+###Variable selection
+
+```{r, echo=TRUE}
+# Fit a logistic regression GLM model
+logit.glm <- glm(readmitted ~ ., family = binomial, data = train)
+summary(logit.glm)
+
+# Perform model selection procedure based on stepwise methods (both AIC and BIC)
+# Based on AIC
+AIC.mod <- step(logit.glm, trace=0, k = 2)
+
+# Summary of the model selected based on AIC
+summary(AIC.mod)
+
+# Based on BIC
+BIC.mod <- step(logit.glm, trace=0, k = log(48054))
+
+# Summary of the model selected based on AIC
+summary(BIC.mod)
+
+# We see that the model selected by AIC and BIC is different, they have a different set of 
+# covariates, so we use drop1 command to test for each different covariate's significance to
+# decide whether we keep it or not in our final model:
+
+# Test for admission_type_id
+drop1(glm(readmitted ~ admission_type_id, family=binomial, data=train), test='Chi')
+# Test for max_glu_serum
+drop1(glm(readmitted ~ max_glu_serum, family=binomial, data=train), test='Chi')
+# Test for HbA1c
+drop1(glm(readmitted ~ HbA1c, family=binomial, data=train), test='Chi')
+# Test for medical_specialty
+drop1(glm(readmitted ~ medical_specialty, family=binomial, data=train), test='Chi')
+# Test for num_procedures
+drop1(glm(readmitted ~ num_procedures, family=binomial, data=train), test='Chi')
+# Test for num_of_med
+drop1(glm(readmitted ~ num_of_med, family=binomial, data=train), test='Chi')
+# Test for num_of_changes
+drop1(glm(readmitted ~ num_of_changes, family=binomial, data=train), test='Chi')
+
+# Combine and based on the results of model selection procedure based on stepwise methods 
+# (AIC and BIC) and also consider the results of above drop1 commands. We decide to choose the following covariates:
+# (1) age, (2) admission_type_id (3) Discharge, (4) Length.of.Stay, (5) medical_specialty, 
+# (6) num_procedures, (7) number_diagnoses, (8) diabetesMed, (9) num_of_med, (10) num_of_changes,
+# (11) num_visits, (12) HbA1c to fit our final logistic regression GLM model
+logit.final <- glm(readmitted ~ age + admission_type_id + Discharge + Length.of.Stay + medical_specialty + num_procedures + number_diagnoses + diabetesMed + num_of_med + num_of_changes + num_visits + HbA1c, family = binomial, data = train)
+
+# Summary of our final model
+summary(logit.final)
+```
+
+###Model Violations/Diagnostics
+
+```{r, echo=TRUE}
+# Model Violations/Diagnostics
+
+# We will construct a binned residual plot as described in the lecture slides. 
+# First, we add the residuals and linear predictor to the train data frame.
+train <- mutate(train,residuals=residuals(logit.final), linpred=predict(logit.final), predprob=predict(logit.final,type='response'))
+predprob <- predict(logit.final, type='response') # predicted probabilities
+
+# We now create the bins, compute the mean of the residuals and linear predictors in each bin.
+gdf <- group_by(train, ntile(linpred,100)) 
+diagdf <- summarise(gdf, residuals=mean(residuals), linpred=mean(linpred), predprob=mean(predprob))
+plot(residuals~linpred,diagdf, xlab='Linear Predictor', ylab='Deviance Residuals', pch=20)
+
+# Plot Fitted values ~ Deviance Residuals
+plot(residuals~predprob,diagdf, xlab='Fitted Values', ylab='Deviance Residuals', pch=20)
+
+# We can also plot the binned residuals against the predictors
+# Since the HbA1c predictor takes on only a limited number of values, and based on paper
+# it seems a quite important covariate so we can just group by HbA1c directly.
+gdf <- group_by(train, HbA1c)
+diagdf <- summarise(gdf, residuals = mean(residuals)) 
+ggplot(diagdf, aes(x=HbA1c, y=residuals)) + geom_point()
+
+# We can display a QQ plot of the residuals
+qqnorm(residuals(logit.final))
+ 
+# We can detect unusual observations by examining the leverages; 
+# we can use a half-normal plot for this.
+faraway::halfnorm(hatvalues(logit.final))
+```
+
+###Goodness of Final Model
+
+```{r, echo=TRUE}
+# Goodness of Final Model
+
+library(rms)
+
+# For binary response, Hosmer-Lemeshow statistic can be used as a measure of fit.
+
+# We first divide the observations up into J bins based on the linear predictor. 
+# We then take the mean response and mean predicted probability within each bin.
+# We then plot the observed proportions against the predicted probabilities. 
+# For a well-calibrated prediction model, the observed proportions and predicted 
+# probabilities should be close.
+train <- mutate(train, predprob=predict(logit.final, type='response'), linpred=predict(logit.final))
+gdf <- group_by(train, ntile(linpred, 100))
+hldf <- summarise(gdf, y=sum(readmitted=="readmission"), ppred=mean(predprob), count=n())
+hldf <- mutate(hldf, se.fit=sqrt(ppred*(1-ppred)/count)) 
+ggplot(hldf, aes(x=ppred, y=y/count, ymin=y/count-2*se.fit, ymax=y/count+2*se.fit)) +
+geom_point() + geom_linerange(color=grey(0.75)) + geom_abline(intercept=0, slope=1) + xlab("Predicted Probability") + ylab("Observed Proportion")
+
+# We will now compute the test statistic and p–value for the Hosmer-Lemeshow test. 
+# This test formalizes the procedure above.
+hlstat <- with(hldf, sum((y-count*ppred)^2/(count*ppred*(1-ppred)))) 
+c(hlstat, nrow(hldf))
+
+# The p–value is given by
+1 - pchisq(hlstat, 100-2)
+
+
+# Now let’s move on to sensitivity and specificity. 
+# The ROC curve perhaps the best way to assess goodness of fit for binary response models.
+# Construct the Receiver operating characteristic (ROC) curve. 
+# Calculate the area under the curve (AUC) for train data
+p <- fitted(logit.final)
+roc_logit <- pROC::roc(train$readmitted ~ p)
+TPR <- roc_logit$sensitivities
+FPR <- 1 - roc_logit$specificities
+
+plot(FPR, TPR, xlim = c(0,1), ylim = c(0,1), 
+              type = 'l', lty = 1, lwd = 2, col = 'red', bty = "n")
+
+abline(a = 0, b = 1, lty = 2, col = 'blue')
+text(0.7, 0.4, label = paste("AUC = ", round(pROC::auc(roc_logit), 2)))
+
+pROC::auc(roc_logit)
+
+# Construct the Receiver operating characteristic (ROC) curve. 
+# Calculate the area under the curve (AUC) for test data
+p <- predict(logit.final, newdata = test, type = 'response')
+roc_logit <- pROC::roc(test$readmitted ~ p)
+TPR <- roc_logit$sensitivities
+FPR <- 1 - roc_logit$specificities
+
+plot(FPR, TPR, xlim = c(0,1), ylim = c(0,1), 
+              type = 'l', lty = 1, lwd = 2, col = 'red', bty = "n")
+
+abline(a = 0, b = 1, lty = 2, col = 'blue')
+text(0.7, 0.4, label = paste("AUC = ", round(pROC::auc(roc_logit), 2)))
+
+pROC::auc(roc_logit)
+
+# Fit the model with lrm from rms package, and using the final model
+lrm.final <- lrm(readmitted ~ age + admission_type_id + Discharge 
+               + Length.of.Stay + medical_specialty + num_procedures 
+               + number_diagnoses + diabetesMed + num_of_med + num_of_changes 
+               + num_visits + HbA1c, data=test,  
+                x =TRUE, y = TRUE, model= T)
+
+# Model calibration
+cross.calib <- calibrate(lrm.final, method="crossvalidation", B=10) 
+par(family = 'serif')
+plot(cross.calib, las=1, xlab = "Predicted Probability")
+```
+

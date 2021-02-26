@@ -1,0 +1,1548 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={STA303 Final Project R codes and outputs},
+  pdfauthor={Wei Cui 1004536479},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{STA303 Final Project R codes and outputs}
+\author{Wei Cui 1004536479}
+\date{2020-08-23}
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## -- Attaching packages ------------------------------------------------------------ tidyverse 1.3.0 --
+\end{verbatim}
+
+\begin{verbatim}
+## v ggplot2 3.3.2     v purrr   0.3.3
+## v tibble  2.1.3     v dplyr   0.8.5
+## v tidyr   1.0.2     v stringr 1.4.0
+## v readr   1.3.1     v forcats 0.5.0
+\end{verbatim}
+
+\begin{verbatim}
+## -- Conflicts --------------------------------------------------------------- tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(naniar)}
+
+\CommentTok{# Clean up the environment}
+\KeywordTok{rm}\NormalTok{(}\DataTypeTok{list =} \KeywordTok{ls}\NormalTok{())}
+
+\CommentTok{# Load the diabetes dataset}
+\NormalTok{diabetes <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{"diabetes.csv"}\NormalTok{, }\DataTypeTok{header =} \OtherTok{TRUE}\NormalTok{)}
+
+\CommentTok{# Removes first column (since it is redundant)}
+\NormalTok{diabetes <-}\StringTok{ }\NormalTok{diabetes[,}\OperatorTok{-}\DecValTok{1}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\#\#\#Data Preparation \& Preprocessing
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Data Preparation & Preprocessing:}
+
+\CommentTok{# Displaying first 6 rows of data using "head" command}
+\KeywordTok{head}\NormalTok{(diabetes)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   encounter_id patient_nbr            race gender     age weight
+## 1      2278392     8222157       Caucasian Female  [0-10)   <NA>
+## 2       149190    55629189       Caucasian Female [10-20)   <NA>
+## 3        64410    86047875 AfricanAmerican Female [20-30)   <NA>
+## 4       500364    82442376       Caucasian   Male [30-40)   <NA>
+## 5        16680    42519267       Caucasian   Male [40-50)   <NA>
+## 6        35754    82637451       Caucasian   Male [50-60)   <NA>
+##   admission_type_id discharge_disposition_id admission_source_id
+## 1                 6                       25                   1
+## 2                 1                        1                   7
+## 3                 1                        1                   7
+## 4                 1                        1                   7
+## 5                 1                        1                   7
+## 6                 2                        1                   2
+##   Length.of.Stay payer_code        medical_specialty num_lab_procedures
+## 1              1       <NA> Pediatrics-Endocrinology                 41
+## 2              3       <NA>                     <NA>                 59
+## 3              2       <NA>                     <NA>                 11
+## 4              2       <NA>                     <NA>                 44
+## 5              1       <NA>                     <NA>                 51
+## 6              3       <NA>                     <NA>                 31
+##   num_procedures num_medications number_outpatient number_emergency
+## 1              0               1                 0                0
+## 2              0              18                 0                0
+## 3              5              13                 2                0
+## 4              1              16                 0                0
+## 5              0               8                 0                0
+## 6              6              16                 0                0
+##   number_inpatient number_diagnoses max_glu_serum A1Cresult metformin
+## 1                0                1          None      None        No
+## 2                0                9          None      None        No
+## 3                1                6          None      None        No
+## 4                0                7          None      None        No
+## 5                0                5          None      None        No
+## 6                0                9          None      None        No
+##   repaglinide nateglinide chlorpropamide glimepiride acetohexamide
+## 1          No          No             No          No            No
+## 2          No          No             No          No            No
+## 3          No          No             No          No            No
+## 4          No          No             No          No            No
+## 5          No          No             No          No            No
+## 6          No          No             No          No            No
+##   glipizide glyburide tolbutamide pioglitazone rosiglitazone acarbose
+## 1        No        No          No           No            No       No
+## 2        No        No          No           No            No       No
+## 3    Steady        No          No           No            No       No
+## 4        No        No          No           No            No       No
+## 5    Steady        No          No           No            No       No
+## 6        No        No          No           No            No       No
+##   miglitol troglitazone tolazamide examide citoglipton insulin
+## 1       No           No         No      No          No      No
+## 2       No           No         No      No          No      Up
+## 3       No           No         No      No          No      No
+## 4       No           No         No      No          No      Up
+## 5       No           No         No      No          No  Steady
+## 6       No           No         No      No          No  Steady
+##   glyburide.metformin glipizide.metformin glimepiride.pioglitazone
+## 1                  No                  No                       No
+## 2                  No                  No                       No
+## 3                  No                  No                       No
+## 4                  No                  No                       No
+## 5                  No                  No                       No
+## 6                  No                  No                       No
+##   metformin.rosiglitazone metformin.pioglitazone change diabetesMed
+## 1                      No                     No     No          No
+## 2                      No                     No     Ch         Yes
+## 3                      No                     No     No         Yes
+## 4                      No                     No     Ch         Yes
+## 5                      No                     No     Ch         Yes
+## 6                      No                     No     No         Yes
+##   readmitted encounter_num
+## 1         NO             1
+## 2        >30             1
+## 3         NO             1
+## 4         NO             1
+## 5         NO             1
+## 6        >30             1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Checking data types and showing different levels of each variable}
+\CommentTok{# Get familiar with each covariates}
+\KeywordTok{str}\NormalTok{(diabetes)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    101766 obs. of  48 variables:
+##  $ encounter_id            : int  2278392 149190 64410 500364 16680 35754 55842 63768 12522 15738 ...
+##  $ patient_nbr             : int  8222157 55629189 86047875 82442376 42519267 82637451 84259809 114882984 48330783 63555939 ...
+##  $ race                    : Factor w/ 5 levels "AfricanAmerican",..: 3 3 1 3 3 3 3 3 3 3 ...
+##  $ gender                  : Factor w/ 3 levels "Female","Male",..: 1 1 1 2 2 2 2 2 1 1 ...
+##  $ age                     : Factor w/ 10 levels "[0-10)","[10-20)",..: 1 2 3 4 5 6 7 8 9 10 ...
+##  $ weight                  : Factor w/ 9 levels "[0-25)","[100-125)",..: NA NA NA NA NA NA NA NA NA NA ...
+##  $ admission_type_id       : int  6 1 1 1 1 2 3 1 2 3 ...
+##  $ discharge_disposition_id: int  25 1 1 1 1 1 1 1 1 3 ...
+##  $ admission_source_id     : int  1 7 7 7 7 2 2 7 4 4 ...
+##  $ Length.of.Stay          : int  1 3 2 2 1 3 4 5 13 12 ...
+##  $ payer_code              : Factor w/ 17 levels "BC","CH","CM",..: NA NA NA NA NA NA NA NA NA NA ...
+##  $ medical_specialty       : Factor w/ 72 levels "AllergyandImmunology",..: 38 NA NA NA NA NA NA NA NA 19 ...
+##  $ num_lab_procedures      : int  41 59 11 44 51 31 70 73 68 33 ...
+##  $ num_procedures          : int  0 0 5 1 0 6 1 0 2 3 ...
+##  $ num_medications         : int  1 18 13 16 8 16 21 12 28 18 ...
+##  $ number_outpatient       : int  0 0 2 0 0 0 0 0 0 0 ...
+##  $ number_emergency        : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ number_inpatient        : int  0 0 1 0 0 0 0 0 0 0 ...
+##  $ number_diagnoses        : int  1 9 6 7 5 9 7 8 8 8 ...
+##  $ max_glu_serum           : Factor w/ 4 levels ">200",">300",..: 3 3 3 3 3 3 3 3 3 3 ...
+##  $ A1Cresult               : Factor w/ 4 levels ">7",">8","None",..: 3 3 3 3 3 3 3 3 3 3 ...
+##  $ metformin               : Factor w/ 4 levels "Down","No","Steady",..: 2 2 2 2 2 2 3 2 2 2 ...
+##  $ repaglinide             : Factor w/ 4 levels "Down","No","Steady",..: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ nateglinide             : Factor w/ 4 levels "Down","No","Steady",..: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ chlorpropamide          : Factor w/ 4 levels "Down","No","Steady",..: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ glimepiride             : Factor w/ 4 levels "Down","No","Steady",..: 2 2 2 2 2 2 3 2 2 2 ...
+##  $ acetohexamide           : Factor w/ 2 levels "No","Steady": 1 1 1 1 1 1 1 1 1 1 ...
+##  $ glipizide               : Factor w/ 4 levels "Down","No","Steady",..: 2 2 3 2 3 2 2 2 3 2 ...
+##  $ glyburide               : Factor w/ 4 levels "Down","No","Steady",..: 2 2 2 2 2 2 2 3 2 2 ...
+##  $ tolbutamide             : Factor w/ 2 levels "No","Steady": 1 1 1 1 1 1 1 1 1 1 ...
+##  $ pioglitazone            : Factor w/ 4 levels "Down","No","Steady",..: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ rosiglitazone           : Factor w/ 4 levels "Down","No","Steady",..: 2 2 2 2 2 2 2 2 2 3 ...
+##  $ acarbose                : Factor w/ 4 levels "Down","No","Steady",..: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ miglitol                : Factor w/ 4 levels "Down","No","Steady",..: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ troglitazone            : Factor w/ 2 levels "No","Steady": 1 1 1 1 1 1 1 1 1 1 ...
+##  $ tolazamide              : Factor w/ 3 levels "No","Steady",..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ examide                 : Factor w/ 1 level "No": 1 1 1 1 1 1 1 1 1 1 ...
+##  $ citoglipton             : Factor w/ 1 level "No": 1 1 1 1 1 1 1 1 1 1 ...
+##  $ insulin                 : Factor w/ 4 levels "Down","No","Steady",..: 2 4 2 4 3 3 3 2 3 3 ...
+##  $ glyburide.metformin     : Factor w/ 4 levels "Down","No","Steady",..: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ glipizide.metformin     : Factor w/ 2 levels "No","Steady": 1 1 1 1 1 1 1 1 1 1 ...
+##  $ glimepiride.pioglitazone: Factor w/ 2 levels "No","Steady": 1 1 1 1 1 1 1 1 1 1 ...
+##  $ metformin.rosiglitazone : Factor w/ 2 levels "No","Steady": 1 1 1 1 1 1 1 1 1 1 ...
+##  $ metformin.pioglitazone  : Factor w/ 2 levels "No","Steady": 1 1 1 1 1 1 1 1 1 1 ...
+##  $ change                  : Factor w/ 2 levels "Ch","No": 2 1 2 1 1 2 1 2 1 1 ...
+##  $ diabetesMed             : Factor w/ 2 levels "No","Yes": 1 2 2 2 2 2 2 2 2 2 ...
+##  $ readmitted              : Factor w/ 3 levels "<30",">30","NO": 3 2 3 3 3 2 3 2 3 3 ...
+##  $ encounter_num           : int  1 1 1 1 1 1 1 1 1 1 ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# A brief summary of the dataset}
+\KeywordTok{summary}\NormalTok{(diabetes)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   encounter_id        patient_nbr                     race      
+##  Min.   :    12522   Min.   :      135   AfricanAmerican:19210  
+##  1st Qu.: 84961194   1st Qu.: 23413221   Asian          :  641  
+##  Median :152388987   Median : 45505143   Caucasian      :76099  
+##  Mean   :165201646   Mean   : 54330401   Hispanic       : 2037  
+##  3rd Qu.:230270888   3rd Qu.: 87545950   Other          : 1506  
+##  Max.   :443867222   Max.   :189502619   NA's           : 2273  
+##                                                                 
+##              gender           age              weight     
+##  Female         :54708   [70-80):26068   [75-100) : 1336  
+##  Male           :47055   [60-70):22483   [50-75)  :  897  
+##  Unknown/Invalid:    3   [50-60):17256   [100-125):  625  
+##                          [80-90):17197   [125-150):  145  
+##                          [40-50): 9685   [25-50)  :   97  
+##                          [30-40): 3775   (Other)  :   97  
+##                          (Other): 5302   NA's     :98569  
+##  admission_type_id discharge_disposition_id admission_source_id
+##  Min.   :1.000     Min.   : 1.000           Min.   : 1.000     
+##  1st Qu.:1.000     1st Qu.: 1.000           1st Qu.: 1.000     
+##  Median :1.000     Median : 1.000           Median : 7.000     
+##  Mean   :2.024     Mean   : 3.716           Mean   : 5.754     
+##  3rd Qu.:3.000     3rd Qu.: 4.000           3rd Qu.: 7.000     
+##  Max.   :8.000     Max.   :28.000           Max.   :25.000     
+##                                                                
+##  Length.of.Stay     payer_code                 medical_specialty
+##  Min.   : 1.000   MC     :32439   InternalMedicine      :14635  
+##  1st Qu.: 2.000   HM     : 6274   Emergency/Trauma      : 7565  
+##  Median : 4.000   SP     : 5007   Family/GeneralPractice: 7440  
+##  Mean   : 4.396   BC     : 4655   Cardiology            : 5352  
+##  3rd Qu.: 6.000   MD     : 3532   Surgery-General       : 3099  
+##  Max.   :14.000   (Other): 9603   (Other)               :13726  
+##                   NA's   :40256   NA's                  :49949  
+##  num_lab_procedures num_procedures num_medications number_outpatient
+##  Min.   :  1.0      Min.   :0.00   Min.   : 1.00   Min.   : 0.0000  
+##  1st Qu.: 31.0      1st Qu.:0.00   1st Qu.:10.00   1st Qu.: 0.0000  
+##  Median : 44.0      Median :1.00   Median :15.00   Median : 0.0000  
+##  Mean   : 43.1      Mean   :1.34   Mean   :16.02   Mean   : 0.3694  
+##  3rd Qu.: 57.0      3rd Qu.:2.00   3rd Qu.:20.00   3rd Qu.: 0.0000  
+##  Max.   :132.0      Max.   :6.00   Max.   :81.00   Max.   :42.0000  
+##                                                                     
+##  number_emergency  number_inpatient  number_diagnoses max_glu_serum
+##  Min.   : 0.0000   Min.   : 0.0000   Min.   : 1.000   >200: 1485   
+##  1st Qu.: 0.0000   1st Qu.: 0.0000   1st Qu.: 6.000   >300: 1264   
+##  Median : 0.0000   Median : 0.0000   Median : 8.000   None:96420   
+##  Mean   : 0.1978   Mean   : 0.6356   Mean   : 7.423   Norm: 2597   
+##  3rd Qu.: 0.0000   3rd Qu.: 1.0000   3rd Qu.: 9.000                
+##  Max.   :76.0000   Max.   :21.0000   Max.   :16.000                
+##                                                                    
+##  A1Cresult     metformin     repaglinide     nateglinide    
+##  >7  : 3812   Down  :  575   Down  :    45   Down  :    11  
+##  >8  : 8216   No    :81778   No    :100227   No    :101063  
+##  None:84748   Steady:18346   Steady:  1384   Steady:   668  
+##  Norm: 4990   Up    : 1067   Up    :   110   Up    :    24  
+##                                                             
+##                                                             
+##                                                             
+##  chlorpropamide  glimepiride    acetohexamide    glipizide    
+##  Down  :     1   Down  :  194   No    :101765   Down  :  560  
+##  No    :101680   No    :96575   Steady:     1   No    :89080  
+##  Steady:    79   Steady: 4670                   Steady:11356  
+##  Up    :     6   Up    :  327                   Up    :  770  
+##                                                               
+##                                                               
+##                                                               
+##   glyburide     tolbutamide     pioglitazone   rosiglitazone 
+##  Down  :  564   No    :101743   Down  :  118   Down  :   87  
+##  No    :91116   Steady:    23   No    :94438   No    :95401  
+##  Steady: 9274                   Steady: 6976   Steady: 6100  
+##  Up    :  812                   Up    :  234   Up    :  178  
+##                                                              
+##                                                              
+##                                                              
+##    acarbose        miglitol      troglitazone     tolazamide    
+##  Down  :     3   Down  :     5   No    :101763   No    :101727  
+##  No    :101458   No    :101728   Steady:     3   Steady:    38  
+##  Steady:   295   Steady:    31                   Up    :     1  
+##  Up    :    10   Up    :     2                                  
+##                                                                 
+##                                                                 
+##                                                                 
+##  examide     citoglipton   insulin      glyburide.metformin
+##  No:101766   No:101766   Down  :12218   Down  :     6      
+##                          No    :47383   No    :101060      
+##                          Steady:30849   Steady:   692      
+##                          Up    :11316   Up    :     8      
+##                                                            
+##                                                            
+##                                                            
+##  glipizide.metformin glimepiride.pioglitazone metformin.rosiglitazone
+##  No    :101753       No    :101765            No    :101764          
+##  Steady:    13       Steady:     1            Steady:     2          
+##                                                                      
+##                                                                      
+##                                                                      
+##                                                                      
+##                                                                      
+##  metformin.pioglitazone change     diabetesMed readmitted  encounter_num  
+##  No    :101765          Ch:47011   No :23403   <30:11357   Min.   : 1.00  
+##  Steady:     1          No:54755   Yes:78363   >30:35545   1st Qu.: 1.00  
+##                                                NO :54864   Median : 1.00  
+##                                                            Mean   : 1.63  
+##                                                            3rd Qu.: 2.00  
+##                                                            Max.   :40.00  
+## 
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Change column type from numerical to categorical/nominal}
+\NormalTok{diabetes}\OperatorTok{$}\NormalTok{discharge_disposition_id <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{discharge_disposition_id)}
+\NormalTok{diabetes}\OperatorTok{$}\NormalTok{admission_type_id <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{admission_type_id)}
+
+\CommentTok{# Removing duplicate patients' encounter for GLM model}
+\CommentTok{# only take the first observation to avoid bias and ensure independence of observations}
+\NormalTok{diabetes <-}\StringTok{ }\NormalTok{diabetes[}\OperatorTok{!}\KeywordTok{duplicated}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{patient_nbr),]}
+
+\CommentTok{# Since we remove all duplicate patients' encounter. For variable encounter_num,}
+\CommentTok{# it only has 1 value, i.e. 1. Therefore, this variable has zero variance}
+\CommentTok{# and thus we drop this variable.}
+\NormalTok{diabetes <-}\StringTok{ }\NormalTok{diabetes }\OperatorTok{%>%}\StringTok{ }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\NormalTok{encounter_num)}
+
+\CommentTok{# As stated in our final_project.pdf, ‘encounter_id’, ‘admission_source_id’, }
+\CommentTok{# 'patient_nbr', ‘payer_code’ are some identification variables.}
+\CommentTok{# Therefore these variables should not be considered as covariates.}
+\NormalTok{diabetes <-}\StringTok{ }\NormalTok{diabetes }\OperatorTok{%>%}\StringTok{ }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\NormalTok{encounter_id, }\OperatorTok{-}\NormalTok{admission_source_id, }\OperatorTok{-}\NormalTok{payer_code, }\OperatorTok{-}\NormalTok{patient_nbr)}
+
+\CommentTok{# Checking missing values in diabetes dataset for }
+\CommentTok{# column wise and compute the total NA counts for each variable}
+\NormalTok{NA_Count <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(diabetes, }\ControlFlowTok{function}\NormalTok{(y) }\KeywordTok{sum}\NormalTok{(}\KeywordTok{length}\NormalTok{(}\KeywordTok{which}\NormalTok{(}\KeywordTok{is.na}\NormalTok{(y)))))}
+\NormalTok{NA_Count <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(NA_Count)}
+\NormalTok{NA_Count}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                          NA_Count
+## race                         1948
+## gender                          0
+## age                             0
+## weight                      68665
+## admission_type_id               0
+## discharge_disposition_id        0
+## Length.of.Stay                  0
+## medical_specialty           34477
+## num_lab_procedures              0
+## num_procedures                  0
+## num_medications                 0
+## number_outpatient               0
+## number_emergency                0
+## number_inpatient                0
+## number_diagnoses                0
+## max_glu_serum                   0
+## A1Cresult                       0
+## metformin                       0
+## repaglinide                     0
+## nateglinide                     0
+## chlorpropamide                  0
+## glimepiride                     0
+## acetohexamide                   0
+## glipizide                       0
+## glyburide                       0
+## tolbutamide                     0
+## pioglitazone                    0
+## rosiglitazone                   0
+## acarbose                        0
+## miglitol                        0
+## troglitazone                    0
+## tolazamide                      0
+## examide                         0
+## citoglipton                     0
+## insulin                         0
+## glyburide.metformin             0
+## glipizide.metformin             0
+## glimepiride.pioglitazone        0
+## metformin.rosiglitazone         0
+## metformin.pioglitazone          0
+## change                          0
+## diabetesMed                     0
+## readmitted                      0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# For convenience of visualization, we plot the }
+\CommentTok{# missing percentage of each variable}
+\KeywordTok{gg_miss_var}\NormalTok{(diabetes, }\DataTypeTok{show_pct =} \OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_Project_Wei_Cui_files/figure-latex/unnamed-chunk-2-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# From the plot we see that variable weight contains approximate 98% of the missing }
+\CommentTok{# values, thus we decide to drop the variable weight.}
+\NormalTok{diabetes <-}\StringTok{ }\NormalTok{diabetes }\OperatorTok{%>%}\StringTok{ }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\NormalTok{weight)}
+
+\CommentTok{# Although variable medical_specialty contains approximate 50% of the missing values}
+\CommentTok{#, it may still be a significant covariate for predicting readmission. Therefore,}
+\CommentTok{# we keep it but reduce to fewer categories based on reference paper:}
+\CommentTok{# Beata Strack,1 Jonathan P. DeShazo,2 Chris Gennings,3 Juan L. Olmo,4 Sebastian Ventura,}
+\CommentTok{# 4 Krzysztof J. Cios,1,5 and John N. Clore6 (2014) }
+\CommentTok{# Impact of HbA1c Measurement on Hospital Readmission Rates: Analysis of 70,000 }
+\CommentTok{# Clinical Database Patient Records}
+\NormalTok{diabetes}\OperatorTok{$}\NormalTok{medical_specialty <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(}\KeywordTok{ifelse}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{medical_specialty }\OperatorTok{==}\StringTok{ "Family/GeneralPractice"}\NormalTok{, }\StringTok{'General Practice'}\NormalTok{, }\KeywordTok{ifelse}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{medical_specialty }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Cardiology"}\NormalTok{, }\StringTok{"Cardiology-Pediatric"}\NormalTok{, }\StringTok{"Gastroenterology"}\NormalTok{, }\StringTok{"Endocrinology"}\NormalTok{, }\StringTok{"Endocrinology-Metabolism"}\NormalTok{, }\StringTok{"Hematology"}\NormalTok{, }\StringTok{"Hematology/Oncology"}\NormalTok{, }\StringTok{"InternalMedicine"}\NormalTok{, }\StringTok{"Nephrology"}\NormalTok{, }\StringTok{"InfectiousDiseases"}\NormalTok{, }\StringTok{"Oncology"}\NormalTok{, }\StringTok{"Proctology"}\NormalTok{, }\StringTok{"Pulmonology"}\NormalTok{, }\StringTok{"Rheumatology"}\NormalTok{, }\StringTok{"SportsMedicine"}\NormalTok{, }\StringTok{"Urology"}\NormalTok{), }\StringTok{'Internal Medicine'}\NormalTok{, }\KeywordTok{ifelse}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{medical_specialty }\OperatorTok{==}\StringTok{ "Emergency/Trauma"}\NormalTok{, }\StringTok{'Emergency'}\NormalTok{, }\KeywordTok{ifelse}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{medical_specialty }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Orthopedics"}\NormalTok{, }\StringTok{"Orthopedics-Reconstructive"}\NormalTok{, }\StringTok{"Osteopath"}\NormalTok{, }\StringTok{"Otolaryngology"}\NormalTok{, }\StringTok{"Surgeon"}\NormalTok{, }\StringTok{"Surgery-Cardiovascular"}\NormalTok{, }\StringTok{"Surgery-Cardiovascular/Thoracic"}\NormalTok{, }\StringTok{"Surgery-Colon&Rectal"}\NormalTok{, }\StringTok{"Surgery-General"}\NormalTok{, }\StringTok{"Surgery-Maxillofacial"}\NormalTok{, }\StringTok{"Surgery-Neuro"}\NormalTok{, }\StringTok{"Surgery-Pediatric"}\NormalTok{, }\StringTok{"Surgery-Plastic"}\NormalTok{, }\StringTok{"Surgery-PlasticwithinHeadandNeck"}\NormalTok{, }\StringTok{"Surgery-Thoracic"}\NormalTok{, }\StringTok{"Surgery-Vascular"}\NormalTok{, }\StringTok{"SurgicalSpecialty"}\NormalTok{), }\StringTok{'Surgery'}\NormalTok{, }\StringTok{'Other'}\NormalTok{)))))}
+
+\CommentTok{# Add another factor level called "Missing" for medical_specialty to deal with}
+\CommentTok{# NAs}
+\NormalTok{diabetes}\OperatorTok{$}\NormalTok{medical_specialty <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{medical_specialty, }\DataTypeTok{levels=}\KeywordTok{c}\NormalTok{(}\KeywordTok{levels}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{medical_specialty), }\StringTok{"Missing"}\NormalTok{))}
+\NormalTok{diabetes}\OperatorTok{$}\NormalTok{medical_specialty[}\KeywordTok{is.na}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{medical_specialty)] <-}\StringTok{ "Missing"}
+
+\KeywordTok{levels}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{medical_specialty)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Emergency"         "General Practice"  "Internal Medicine"
+## [4] "Other"             "Surgery"           "Missing"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Since gender has Unknown/Invalid type, so we compute its missing values separately}
+\NormalTok{gender_NA_Count <-}\StringTok{ }\KeywordTok{sum}\NormalTok{(}\KeywordTok{ifelse}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{gender }\OperatorTok{==}\StringTok{ 'Unknown/Invalid'}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{))}
+\NormalTok{gender_NA_Count <-}\StringTok{ }\KeywordTok{data_frame}\NormalTok{(gender_NA_Count)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: `data_frame()` is deprecated, use `tibble()`.
+## This warning is displayed once per session.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gender_NA_Count}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: `...` is not empty.
+## 
+## We detected these problematic arguments:
+## * `needs_dots`
+## 
+## These dots only exist to allow future extensions and should be empty.
+## Did you misspecify an argument?
+\end{verbatim}
+
+\begin{verbatim}
+## # A tibble: 1 x 1
+##   gender_NA_Count
+##             <dbl>
+## 1               3
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Remove 3 observations with Unknown/Invalid values in gender }
+\NormalTok{diabetes <-}\StringTok{ }\NormalTok{diabetes[diabetes}\OperatorTok{$}\NormalTok{gender }\OperatorTok{!=}\StringTok{ 'Unknown/Invalid'}\NormalTok{,]}
+\NormalTok{diabetes}\OperatorTok{$}\NormalTok{gender <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{gender)}
+
+\CommentTok{# Also remove observations with missing values(NA) for better modeling}
+\NormalTok{diabetes <-}\StringTok{ }\KeywordTok{na.omit}\NormalTok{(diabetes)}
+
+\CommentTok{# Visualizing a brief summary of variable race}
+\KeywordTok{table}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{race)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## AfricanAmerican           Asian       Caucasian        Hispanic 
+##           12887             497           53491            1517 
+##           Other 
+##            1177
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sum}\NormalTok{(diabetes[}\StringTok{'race'}\NormalTok{] }\OperatorTok{==}\StringTok{ 'Caucasian'}\NormalTok{)}\OperatorTok{/}\KeywordTok{nrow}\NormalTok{(diabetes) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.7688913
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sum}\NormalTok{(diabetes[}\StringTok{'race'}\NormalTok{] }\OperatorTok{==}\StringTok{ 'AfricanAmerican'}\NormalTok{)}\OperatorTok{/}\KeywordTok{nrow}\NormalTok{(diabetes)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.1852406
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# From the above brief summary, since the data contains about 76% Caucasians and 19% AfricanAmerican, then all other levels are imputed to a new level called Other.}
+\KeywordTok{levels}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{race)[}\OperatorTok{!}\KeywordTok{levels}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{race) }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{'Caucasian'}\NormalTok{, }\StringTok{'AfricanAmerican'}\NormalTok{) ] <-}\StringTok{ "Other"}
+\KeywordTok{levels}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{race)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "AfricanAmerican" "Other"           "Caucasian"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# From given IDs_mapping.csv, we know that discharge disposition }
+\CommentTok{# id = 11, 13, 14, 19, 20, 21 are patients coded as deceased or sent to hospice.}
+\CommentTok{# Therefore, we remove them since the patients cannot be readmitted to the hospital}
+\NormalTok{diabetes <-}\StringTok{ }\KeywordTok{subset}\NormalTok{(diabetes, discharge_disposition_id }\OperatorTok{!=}\StringTok{ }\DecValTok{11} \OperatorTok{&}\StringTok{ }\NormalTok{discharge_disposition_id }\OperatorTok{!=}\StringTok{ }\DecValTok{13} \OperatorTok{&}\StringTok{ }\NormalTok{discharge_disposition_id }\OperatorTok{!=}\StringTok{ }\DecValTok{14} \OperatorTok{&}\StringTok{ }\NormalTok{discharge_disposition_id }\OperatorTok{!=}\StringTok{ }\DecValTok{19} \OperatorTok{&}\StringTok{ }\NormalTok{discharge_disposition_id }\OperatorTok{!=}\StringTok{ }\DecValTok{20} \OperatorTok{&}\StringTok{ }\NormalTok{discharge_disposition_id }\OperatorTok{!=}\StringTok{ }\DecValTok{21}\NormalTok{)}
+
+\CommentTok{# Some categories with large proportion within variable discharge_disposition_id}
+\KeywordTok{sum}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{discharge_disposition_id }\OperatorTok{==}\StringTok{ }\DecValTok{1}\NormalTok{)}\OperatorTok{/}\KeywordTok{nrow}\NormalTok{(diabetes)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.6323067
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sum}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{discharge_disposition_id }\OperatorTok{==}\StringTok{ }\DecValTok{3}\NormalTok{)}\OperatorTok{/}\KeywordTok{nrow}\NormalTok{(diabetes)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.1252094
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sum}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{discharge_disposition_id }\OperatorTok{==}\StringTok{ }\DecValTok{6}\NormalTok{)}\OperatorTok{/}\KeywordTok{nrow}\NormalTok{(diabetes)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.1191701
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Regroup the variable discharge_disposition_id into four new categories:}
+\CommentTok{# 1.Discharged to home 2.Discharged/transferred to SNF 3.Discharged/transferred }
+\CommentTok{# to home with home health service}
+\NormalTok{diabetes}\OperatorTok{$}\NormalTok{discharge_disposition_id <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(}\KeywordTok{ifelse}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{discharge_disposition_id }\OperatorTok{==}\StringTok{ }\DecValTok{1}\NormalTok{, }\StringTok{'Home'}\NormalTok{, }\KeywordTok{ifelse}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{discharge_disposition_id }\OperatorTok{==}\StringTok{ }\DecValTok{3}\NormalTok{, }\StringTok{'SNF'}\NormalTok{, }\KeywordTok{ifelse}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{discharge_disposition_id }\OperatorTok{==}\StringTok{ }\DecValTok{6}\NormalTok{, }\StringTok{'Home with home health service'}\NormalTok{, }\StringTok{'Other'}\NormalTok{))))}
+\KeywordTok{levels}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{discharge_disposition_id)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Home"                          "Home with home health service"
+## [3] "Other"                         "SNF"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Rename column discharge_disposition_id to Discharge}
+\KeywordTok{names}\NormalTok{(diabetes)[}\KeywordTok{names}\NormalTok{(diabetes)}\OperatorTok{==}\StringTok{'discharge_disposition_id'}\NormalTok{] <-}\StringTok{ 'Discharge'}
+
+\CommentTok{# Referenced on paper:}
+\CommentTok{# Beata Strack,1 Jonathan P. DeShazo,2 Chris Gennings,3 Juan L. Olmo,4 Sebastian Ventura,}
+\CommentTok{# 4 Krzysztof J. Cios,1,5 and John N. Clore6 (2014) }
+\CommentTok{# Impact of HbA1c Measurement on Hospital Readmission Rates: Analysis of 70,000 }
+\CommentTok{# Clinical Database Patient Records}
+\CommentTok{# We reduce the categories within variable age into 3 categories: }
+\CommentTok{# "<30", [30, 60), [60, 100)}
+\NormalTok{diabetes}\OperatorTok{$}\NormalTok{age <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(}\KeywordTok{ifelse}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{age }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{'[0-10)'}\NormalTok{, }\StringTok{'[10-20)'}\NormalTok{, }\StringTok{'[20-30)'}\NormalTok{), }\StringTok{'<30'}\NormalTok{, }\KeywordTok{ifelse}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{age }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{'[30-40)'}\NormalTok{,  }\StringTok{'[40-50)'}\NormalTok{,  }\StringTok{'[50-60)'}\NormalTok{), }\StringTok{'[30, 60)'}\NormalTok{, }\StringTok{'[60, 100)'}\NormalTok{)))}
+\KeywordTok{levels}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{age)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "[30, 60)"  "[60, 100)" "<30"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Examide and citoglipton only have 1 value, so we will not use these variables}
+\NormalTok{diabetes <-}\StringTok{ }\NormalTok{diabetes }\OperatorTok{%>%}\StringTok{ }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\NormalTok{examide, }\OperatorTok{-}\NormalTok{citoglipton)}
+
+\CommentTok{# Based on paper:}
+\CommentTok{# Ahmad Hammoudeha,d,*, Ghazi Al-Naymata, Ibrahim Ghannamb, Nadim Obieda,c (2018)}
+\CommentTok{# Predicting Hospital Readmission among Diabetics using Deep Learning}
+\CommentTok{# We remove all drugs variables and based on these variables, we add 2 additional }
+\CommentTok{# features: the first feature is the number of medications(num_of_med) and }
+\CommentTok{# the second feature is the number of changes(num_of_changes) in the medications. }
+\CommentTok{# Both features are extracted from the drug attributes.}
+\NormalTok{drugs <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{'metformin'}\NormalTok{, }\StringTok{'repaglinide'}\NormalTok{, }\StringTok{'nateglinide'}\NormalTok{, }\StringTok{'chlorpropamide'}\NormalTok{, }\StringTok{'glimepiride'}\NormalTok{, }\StringTok{'glipizide'}\NormalTok{, }\StringTok{'glyburide'}\NormalTok{, }\StringTok{'pioglitazone'}\NormalTok{, }\StringTok{'rosiglitazone'}\NormalTok{, }\StringTok{'acarbose'}\NormalTok{, }\StringTok{'miglitol'}\NormalTok{, }\StringTok{'insulin'}\NormalTok{, }\StringTok{'glyburide.metformin'}\NormalTok{, }\StringTok{'tolazamide'}\NormalTok{, }\StringTok{'metformin.pioglitazone'}\NormalTok{,}\StringTok{'metformin.rosiglitazone'}\NormalTok{, }\StringTok{'glimepiride.pioglitazone'}\NormalTok{, }\StringTok{'glipizide.metformin'}\NormalTok{, }\StringTok{'troglitazone'}\NormalTok{, }\StringTok{'tolbutamide'}\NormalTok{, }\StringTok{'acetohexamide'}\NormalTok{)}
+
+\CommentTok{# Initialize two new added variables }
+\NormalTok{diabetes}\OperatorTok{$}\NormalTok{num_of_med <-}\StringTok{ }\DecValTok{0}
+\NormalTok{diabetes}\OperatorTok{$}\NormalTok{num_of_changes <-}\StringTok{ }\DecValTok{0}
+
+\CommentTok{# For loop}
+\ControlFlowTok{for}\NormalTok{(drug }\ControlFlowTok{in}\NormalTok{ drugs)\{}
+  \CommentTok{# loop through to add 1 for taking a medication}
+\NormalTok{  diabetes}\OperatorTok{$}\NormalTok{num_of_med <-}\StringTok{ }\KeywordTok{ifelse}\NormalTok{(diabetes[drug] }\OperatorTok{!=}\StringTok{ 'No'}\NormalTok{, diabetes}\OperatorTok{$}\NormalTok{num_of_med }\OperatorTok{+}\StringTok{ }\DecValTok{1}\NormalTok{, diabetes}\OperatorTok{$}\NormalTok{num_of_med)}
+  
+  \CommentTok{# loop through to add 1 for there's a dosage change in the medication}
+\NormalTok{  diabetes}\OperatorTok{$}\NormalTok{num_of_changes <-}\StringTok{ }\KeywordTok{ifelse}\NormalTok{((diabetes[drug] }\OperatorTok{==}\StringTok{ 'Up'} \OperatorTok{|}\StringTok{ }\NormalTok{diabetes[drug] }\OperatorTok{==}\StringTok{ 'Down'}\NormalTok{), diabetes}\OperatorTok{$}\NormalTok{num_of_changes }\OperatorTok{+}\StringTok{ }\DecValTok{1}\NormalTok{, diabetes}\OperatorTok{$}\NormalTok{num_of_changes)}
+\NormalTok{\}}
+
+\CommentTok{# Remove all drugs variables}
+\NormalTok{diabetes <-}\StringTok{ }\NormalTok{diabetes }\OperatorTok{%>%}\StringTok{ }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\NormalTok{metformin, }\OperatorTok{-}\NormalTok{repaglinide, }\OperatorTok{-}\NormalTok{nateglinide, }\OperatorTok{-}\NormalTok{chlorpropamide, }\OperatorTok{-}\NormalTok{glimepiride, }\OperatorTok{-}\NormalTok{glipizide, }\OperatorTok{-}\NormalTok{glyburide, }\OperatorTok{-}\NormalTok{pioglitazone, }\OperatorTok{-}\NormalTok{rosiglitazone, }\OperatorTok{-}\NormalTok{acarbose, }\OperatorTok{-}\NormalTok{miglitol, }\OperatorTok{-}\NormalTok{insulin, }\OperatorTok{-}\NormalTok{glyburide.metformin, }\OperatorTok{-}\NormalTok{tolazamide, }\OperatorTok{-}\NormalTok{metformin.pioglitazone, }\OperatorTok{-}\NormalTok{metformin.rosiglitazone, }\OperatorTok{-}\NormalTok{glimepiride.pioglitazone, }\OperatorTok{-}\NormalTok{glipizide.metformin, }\OperatorTok{-}\NormalTok{troglitazone, }\OperatorTok{-}\NormalTok{tolbutamide, }\OperatorTok{-}\NormalTok{acetohexamide)}
+
+\CommentTok{# To reduce variables, we regroup num_lab_procedures and num_procedures into }
+\CommentTok{# a single variable num_procedures}
+\NormalTok{diabetes}\OperatorTok{$}\NormalTok{num_procedures <-}\StringTok{ }\NormalTok{diabetes}\OperatorTok{$}\NormalTok{num_lab_procedures }\OperatorTok{+}\StringTok{ }\NormalTok{diabetes}\OperatorTok{$}\NormalTok{num_procedures}
+\NormalTok{diabetes <-}\StringTok{ }\NormalTok{diabetes }\OperatorTok{%>%}\StringTok{ }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\NormalTok{num_lab_procedures)}
+
+\CommentTok{# Regroup and recode variables number_outpatient, number_emergency and number_inpatient into a new variable called num_visits}
+\NormalTok{diabetes}\OperatorTok{$}\NormalTok{num_visits <-}\StringTok{ }\NormalTok{diabetes}\OperatorTok{$}\NormalTok{number_outpatient }\OperatorTok{+}\StringTok{ }\NormalTok{diabetes}\OperatorTok{$}\NormalTok{number_emergency }\OperatorTok{+}\StringTok{ }\NormalTok{diabetes}\OperatorTok{$}\NormalTok{number_inpatient}
+\NormalTok{diabetes <-}\StringTok{ }\NormalTok{diabetes }\OperatorTok{%>%}\StringTok{ }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\NormalTok{number_outpatient, }\OperatorTok{-}\NormalTok{number_emergency, }\OperatorTok{-}\NormalTok{number_inpatient)}
+
+\CommentTok{# Based on paper:}
+\CommentTok{# Beata Strack,1 Jonathan P. DeShazo,2 Chris Gennings,3 Juan L. Olmo,4 Sebastian Ventura,}
+\CommentTok{# 4 Krzysztof J. Cios,1,5 and John N. Clore6 (2014) }
+\CommentTok{# Impact of HbA1c Measurement on Hospital Readmission Rates: Analysis of 70,000 Clinical }
+\CommentTok{# Database Patient Records}
+\CommentTok{# We combine and recode variable A1Cresult and change into 4 new groups:}
+\CommentTok{# (1) no HbA1c test performed, (2) HbA1c performed and in normal range, }
+\CommentTok{# (3) HbA1c performed and the result is greater than 8% with no change in diabetic medications, }
+\CommentTok{# and (4) HbA1c performed, result is greater than 8%, and diabetic medication was changed.}
+\NormalTok{diabetes}\OperatorTok{$}\NormalTok{HbA1c <-}\StringTok{ }\KeywordTok{factor}\NormalTok{(}\KeywordTok{ifelse}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{A1Cresult }\OperatorTok{==}\StringTok{ 'None'}\NormalTok{, }\DecValTok{1}\NormalTok{,}
+                                \KeywordTok{ifelse}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{A1Cresult }\OperatorTok{==}\StringTok{ 'Norm'} \OperatorTok{|}\StringTok{ }\NormalTok{diabetes}\OperatorTok{$}\NormalTok{A1Cresult }\OperatorTok{==}\StringTok{ '>7'}\NormalTok{, }\DecValTok{2}\NormalTok{,}
+                                       \KeywordTok{ifelse}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{A1Cresult }\OperatorTok{==}\StringTok{ '>8'} \OperatorTok{&}\StringTok{ }\NormalTok{diabetes}\OperatorTok{$}\NormalTok{change }\OperatorTok{==}\StringTok{ 'No'}\NormalTok{, }\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{))))}
+
+\CommentTok{# After we combine and recode variable A1Cresult and change, remove original variables:}
+\CommentTok{# A1Cresult and change}
+\NormalTok{diabetes <-}\StringTok{ }\NormalTok{diabetes }\OperatorTok{%>%}\StringTok{ }\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\NormalTok{A1Cresult, }\OperatorTok{-}\NormalTok{change)}
+
+\CommentTok{# Since 30 days was chosen based on criteria often used by funding agencies,}
+\CommentTok{# we are primarily interested in factors that lead to early readmission and also }
+\CommentTok{# to reduce our problem to a binary classification, then we defined the readmission }
+\CommentTok{# attribute (out-come) as having two values: }
+\CommentTok{# “readmitted,” if the patient was # readmitted within 30 days of discharge }
+\CommentTok{# or “otherwise,” which covers both readmission after 30 days and no readmission at all.}
+\NormalTok{diabetes}\OperatorTok{$}\NormalTok{readmitted =}\StringTok{ }\KeywordTok{factor}\NormalTok{(}\KeywordTok{ifelse}\NormalTok{(diabetes}\OperatorTok{$}\NormalTok{readmitted }\OperatorTok{==}\StringTok{ "<30"}\NormalTok{, }\StringTok{"readmission"}\NormalTok{, }\StringTok{"no readmission"}\NormalTok{))}
+
+\CommentTok{# Create train and test datasets as specified and set my student number as seed}
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{1004536479}\NormalTok{)}
+
+\CommentTok{# Split original dataset into two subsets: train and test}
+\NormalTok{test_idx <-}\StringTok{ }\KeywordTok{sample}\NormalTok{(}\KeywordTok{nrow}\NormalTok{(diabetes), }\DecValTok{20000}\NormalTok{)}
+\NormalTok{test <-}\StringTok{ }\NormalTok{diabetes[test_idx,]}
+\NormalTok{train <-}\StringTok{ }\NormalTok{diabetes[}\OperatorTok{-}\NormalTok{test_idx,]}
+
+\CommentTok{# Note: Since we have already removed all duplicate patients' encounter, then}
+\CommentTok{# our observations in the test data are a random selection of 20000 patients}
+\end{Highlighting}
+\end{Shaded}
+
+\#\#\#Exploration analysis
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Data Exploration Analysis}
+
+\KeywordTok{library}\NormalTok{(ggplot2)}
+
+\CommentTok{# Distribution of Readmission}
+\KeywordTok{ggplot}\NormalTok{(train, }\KeywordTok{aes}\NormalTok{(readmitted)) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{(}\StringTok{"Distribution of Readmission"}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_bar}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_Project_Wei_Cui_files/figure-latex/unnamed-chunk-3-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Readmission/No readmission proportion based on gender}
+\KeywordTok{ggplot}\NormalTok{(train, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{gender, }\DataTypeTok{fill =}\NormalTok{ readmitted)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{stat_count}\NormalTok{(}\DataTypeTok{width =} \FloatTok{0.5}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{ (}\StringTok{"Readmission/No readmission proportion based on gender"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{"gender"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"total count"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{fill =} \StringTok{"Readmission or not"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_Project_Wei_Cui_files/figure-latex/unnamed-chunk-3-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Readmission/No readmission proportion based on age}
+\KeywordTok{ggplot}\NormalTok{(train, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{age, }\DataTypeTok{fill =}\NormalTok{ readmitted)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{stat_count}\NormalTok{(}\DataTypeTok{width =} \FloatTok{0.5}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ggtitle}\NormalTok{ (}\StringTok{"Readmission/No readmission proportion based on age"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{"age"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{ylab}\NormalTok{(}\StringTok{"total count"}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{fill =} \StringTok{"Readmission or not"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_Project_Wei_Cui_files/figure-latex/unnamed-chunk-3-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Readmission/No readmission proportion based on Length.of.Stay}
+\KeywordTok{ggplot}\NormalTok{(train, }\KeywordTok{aes}\NormalTok{(Length.of.Stay, }\DataTypeTok{color =}\NormalTok{ readmitted)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_freqpoly}\NormalTok{(}\DataTypeTok{binwidth =} \DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_Project_Wei_Cui_files/figure-latex/unnamed-chunk-3-4.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Readmission/No readmission proportion based on admission_type_id}
+\KeywordTok{as_tibble}\NormalTok{(train) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{admission_type_id,}\DataTypeTok{fill=}\NormalTok{readmitted)) }\OperatorTok{+}\StringTok{ }\KeywordTok{stat_count}\NormalTok{(}\DataTypeTok{binwidth=}\DecValTok{1}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_density}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Ignoring unknown parameters: binwidth
+\end{verbatim}
+
+\includegraphics{Final_Project_Wei_Cui_files/figure-latex/unnamed-chunk-3-5.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Readmission/No readmission proportion based on num_procudures}
+\KeywordTok{ggplot}\NormalTok{(train, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{num_procedures,}\DataTypeTok{color=}\NormalTok{readmitted))}\OperatorTok{+}\KeywordTok{geom_freqpoly}\NormalTok{()}\OperatorTok{+}\KeywordTok{geom_histogram}\NormalTok{(}\DataTypeTok{alpha=}\FloatTok{0.2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\includegraphics{Final_Project_Wei_Cui_files/figure-latex/unnamed-chunk-3-6.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Readmission/No readmission proportion based on HbA1c}
+\KeywordTok{as_tibble}\NormalTok{(train) }\OperatorTok{%>%}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{HbA1c,}\DataTypeTok{fill=}\NormalTok{readmitted)) }\OperatorTok{+}\StringTok{ }\KeywordTok{stat_count}\NormalTok{(}\DataTypeTok{binwidth =} \DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Ignoring unknown parameters: binwidth
+\end{verbatim}
+
+\includegraphics{Final_Project_Wei_Cui_files/figure-latex/unnamed-chunk-3-7.pdf}
+
+\#\#\#Variable selection
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Fit a logistic regression GLM model}
+\NormalTok{logit.glm <-}\StringTok{ }\KeywordTok{glm}\NormalTok{(readmitted }\OperatorTok{~}\StringTok{ }\NormalTok{., }\DataTypeTok{family =}\NormalTok{ binomial, }\DataTypeTok{data =}\NormalTok{ train)}
+\KeywordTok{summary}\NormalTok{(logit.glm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = readmitted ~ ., family = binomial, data = train)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.8793  -0.4679  -0.3960  -0.3450   2.6361  
+## 
+## Coefficients:
+##                                          Estimate Std. Error z value
+## (Intercept)                            -3.383e+00  1.750e-01 -19.325
+## raceOther                              -1.728e-01  9.150e-02  -1.889
+## raceCaucasian                          -2.511e-02  4.324e-02  -0.581
+## genderMale                             -9.568e-03  3.246e-02  -0.295
+## age[60, 100)                            1.998e-01  3.876e-02   5.154
+## age<30                                  8.276e-02  1.238e-01   0.669
+## admission_type_id2                      4.385e-02  4.621e-02   0.949
+## admission_type_id3                      2.935e-02  4.860e-02   0.604
+## admission_type_id4                     -1.007e+01  1.211e+02  -0.083
+## admission_type_id5                     -2.762e-01  9.562e-02  -2.888
+## admission_type_id6                      3.474e-02  6.923e-02   0.502
+## admission_type_id7                     -1.034e+01  9.632e+01  -0.107
+## admission_type_id8                      1.872e-02  2.729e-01   0.069
+## DischargeHome with home health service  2.231e-01  5.179e-02   4.308
+## DischargeOther                          7.540e-01  4.497e-02  16.769
+## DischargeSNF                            5.496e-01  4.815e-02  11.414
+## Length.of.Stay                          1.982e-02  6.312e-03   3.139
+## medical_specialtyGeneral Practice       2.514e-01  9.204e-02   2.732
+## medical_specialtyInternal Medicine      2.534e-01  7.802e-02   3.249
+## medical_specialtyOther                  5.877e-03  1.121e-01   0.052
+## medical_specialtySurgery                3.476e-02  9.412e-02   0.369
+## medical_specialtyMissing                1.797e-01  7.494e-02   2.398
+## num_procedures                          1.829e-03  9.723e-04   1.882
+## num_medications                         2.857e-03  2.373e-03   1.204
+## number_diagnoses                        4.443e-02  9.468e-03   4.693
+## max_glu_serum>300                      -3.183e-01  2.010e-01  -1.583
+## max_glu_serumNone                      -2.143e-01  1.345e-01  -1.593
+## max_glu_serumNorm                      -3.057e-03  1.558e-01  -0.020
+## diabetesMedYes                          3.343e-01  5.508e-02   6.069
+## num_of_med                             -7.548e-02  2.518e-02  -2.998
+## num_of_changes                          7.357e-02  3.629e-02   2.027
+## num_visits                              9.099e-02  8.580e-03  10.605
+## HbA1c2                                 -1.203e-01  5.781e-02  -2.081
+## HbA1c3                                 -1.778e-01  1.032e-01  -1.723
+## HbA1c4                                 -9.117e-02  7.499e-02  -1.216
+##                                        Pr(>|z|)    
+## (Intercept)                             < 2e-16 ***
+## raceOther                               0.05893 .  
+## raceCaucasian                           0.56143    
+## genderMale                              0.76820    
+## age[60, 100)                           2.54e-07 ***
+## age<30                                  0.50375    
+## admission_type_id2                      0.34264    
+## admission_type_id3                      0.54590    
+## admission_type_id4                      0.93369    
+## admission_type_id5                      0.00387 ** 
+## admission_type_id6                      0.61579    
+## admission_type_id7                      0.91452    
+## admission_type_id8                      0.94530    
+## DischargeHome with home health service 1.65e-05 ***
+## DischargeOther                          < 2e-16 ***
+## DischargeSNF                            < 2e-16 ***
+## Length.of.Stay                          0.00169 ** 
+## medical_specialtyGeneral Practice       0.00630 ** 
+## medical_specialtyInternal Medicine      0.00116 ** 
+## medical_specialtyOther                  0.95818    
+## medical_specialtySurgery                0.71190    
+## medical_specialtyMissing                0.01651 *  
+## num_procedures                          0.05990 .  
+## num_medications                         0.22868    
+## number_diagnoses                       2.69e-06 ***
+## max_glu_serum>300                       0.11338    
+## max_glu_serumNone                       0.11108    
+## max_glu_serumNorm                       0.98434    
+## diabetesMedYes                         1.29e-09 ***
+## num_of_med                              0.00272 ** 
+## num_of_changes                          0.04261 *  
+## num_visits                              < 2e-16 ***
+## HbA1c2                                  0.03743 *  
+## HbA1c3                                  0.08493 .  
+## HbA1c4                                  0.22408    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 29321  on 48053  degrees of freedom
+## Residual deviance: 28509  on 48019  degrees of freedom
+## AIC: 28579
+## 
+## Number of Fisher Scoring iterations: 11
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Perform model selection procedure based on stepwise methods (both AIC and BIC)}
+\CommentTok{# Based on AIC}
+\NormalTok{AIC.mod <-}\StringTok{ }\KeywordTok{step}\NormalTok{(logit.glm, }\DataTypeTok{trace=}\DecValTok{0}\NormalTok{, }\DataTypeTok{k =} \DecValTok{2}\NormalTok{)}
+
+\CommentTok{# Summary of the model selected based on AIC}
+\KeywordTok{summary}\NormalTok{(AIC.mod)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = readmitted ~ age + admission_type_id + Discharge + 
+##     Length.of.Stay + medical_specialty + num_procedures + number_diagnoses + 
+##     max_glu_serum + diabetesMed + num_of_med + num_of_changes + 
+##     num_visits + HbA1c, family = binomial, data = train)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.8750  -0.4680  -0.3957  -0.3455   2.6339  
+## 
+## Coefficients:
+##                                          Estimate Std. Error z value
+## (Intercept)                            -3.433e+00  1.713e-01 -20.038
+## age[60, 100)                            1.971e-01  3.834e-02   5.140
+## age<30                                  7.721e-02  1.235e-01   0.625
+## admission_type_id2                      4.403e-02  4.610e-02   0.955
+## admission_type_id3                      4.041e-02  4.716e-02   0.857
+## admission_type_id4                     -1.012e+01  1.215e+02  -0.083
+## admission_type_id5                     -2.697e-01  9.527e-02  -2.831
+## admission_type_id6                      3.137e-02  6.902e-02   0.455
+## admission_type_id7                     -1.034e+01  9.638e+01  -0.107
+## admission_type_id8                      2.985e-02  2.728e-01   0.109
+## DischargeHome with home health service  2.272e-01  5.173e-02   4.392
+## DischargeOther                          7.564e-01  4.494e-02  16.832
+## DischargeSNF                            5.518e-01  4.796e-02  11.505
+## Length.of.Stay                          2.285e-02  5.869e-03   3.893
+## medical_specialtyGeneral Practice       2.610e-01  9.187e-02   2.841
+## medical_specialtyInternal Medicine      2.690e-01  7.762e-02   3.466
+## medical_specialtyOther                  1.734e-02  1.120e-01   0.155
+## medical_specialtySurgery                6.139e-02  9.283e-02   0.661
+## medical_specialtyMissing                1.949e-01  7.459e-02   2.613
+## num_procedures                          2.069e-03  9.476e-04   2.183
+## number_diagnoses                        4.633e-02  9.329e-03   4.966
+## max_glu_serum>300                      -3.186e-01  2.010e-01  -1.585
+## max_glu_serumNone                      -2.098e-01  1.344e-01  -1.561
+## max_glu_serumNorm                      -7.434e-04  1.557e-01  -0.005
+## diabetesMedYes                          3.372e-01  5.505e-02   6.126
+## num_of_med                             -7.263e-02  2.497e-02  -2.909
+## num_of_changes                          7.782e-02  3.603e-02   2.160
+## num_visits                              9.103e-02  8.572e-03  10.620
+## HbA1c2                                 -1.236e-01  5.778e-02  -2.139
+## HbA1c3                                 -1.845e-01  1.031e-01  -1.789
+## HbA1c4                                 -9.735e-02  7.488e-02  -1.300
+##                                        Pr(>|z|)    
+## (Intercept)                             < 2e-16 ***
+## age[60, 100)                           2.75e-07 ***
+## age<30                                 0.531989    
+## admission_type_id2                     0.339568    
+## admission_type_id3                     0.391579    
+## admission_type_id4                     0.933597    
+## admission_type_id5                     0.004645 ** 
+## admission_type_id6                     0.649455    
+## admission_type_id7                     0.914582    
+## admission_type_id8                     0.912862    
+## DischargeHome with home health service 1.12e-05 ***
+## DischargeOther                          < 2e-16 ***
+## DischargeSNF                            < 2e-16 ***
+## Length.of.Stay                         9.90e-05 ***
+## medical_specialtyGeneral Practice      0.004504 ** 
+## medical_specialtyInternal Medicine     0.000529 ***
+## medical_specialtyOther                 0.876954    
+## medical_specialtySurgery               0.508440    
+## medical_specialtyMissing               0.008964 ** 
+## num_procedures                         0.029005 *  
+## number_diagnoses                       6.84e-07 ***
+## max_glu_serum>300                      0.112921    
+## max_glu_serumNone                      0.118469    
+## max_glu_serumNorm                      0.996191    
+## diabetesMedYes                         9.02e-10 ***
+## num_of_med                             0.003629 ** 
+## num_of_changes                         0.030781 *  
+## num_visits                              < 2e-16 ***
+## HbA1c2                                 0.032440 *  
+## HbA1c3                                 0.073587 .  
+## HbA1c4                                 0.193551    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 29321  on 48053  degrees of freedom
+## Residual deviance: 28514  on 48023  degrees of freedom
+## AIC: 28576
+## 
+## Number of Fisher Scoring iterations: 11
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Based on BIC}
+\NormalTok{BIC.mod <-}\StringTok{ }\KeywordTok{step}\NormalTok{(logit.glm, }\DataTypeTok{trace=}\DecValTok{0}\NormalTok{, }\DataTypeTok{k =} \KeywordTok{log}\NormalTok{(}\DecValTok{48054}\NormalTok{))}
+
+\CommentTok{# Summary of the model selected based on AIC}
+\KeywordTok{summary}\NormalTok{(BIC.mod)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = readmitted ~ age + Discharge + Length.of.Stay + 
+##     number_diagnoses + diabetesMed + num_visits, family = binomial, 
+##     data = train)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.9470  -0.4674  -0.3983  -0.3500   2.5707  
+## 
+## Coefficients:
+##                                         Estimate Std. Error z value
+## (Intercept)                            -3.389084   0.077072 -43.973
+## age[60, 100)                            0.208922   0.037994   5.499
+## age<30                                  0.049933   0.121163   0.412
+## DischargeHome with home health service  0.211403   0.051292   4.122
+## DischargeOther                          0.745478   0.044319  16.821
+## DischargeSNF                            0.527526   0.047108  11.198
+## Length.of.Stay                          0.029065   0.005446   5.337
+## number_diagnoses                        0.046627   0.009008   5.176
+## diabetesMedYes                          0.237190   0.039773   5.964
+## num_visits                              0.094221   0.008528  11.048
+##                                        Pr(>|z|)    
+## (Intercept)                             < 2e-16 ***
+## age[60, 100)                           3.82e-08 ***
+## age<30                                     0.68    
+## DischargeHome with home health service 3.76e-05 ***
+## DischargeOther                          < 2e-16 ***
+## DischargeSNF                            < 2e-16 ***
+## Length.of.Stay                         9.47e-08 ***
+## number_diagnoses                       2.27e-07 ***
+## diabetesMedYes                         2.47e-09 ***
+## num_visits                              < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 29321  on 48053  degrees of freedom
+## Residual deviance: 28582  on 48044  degrees of freedom
+## AIC: 28602
+## 
+## Number of Fisher Scoring iterations: 5
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# We see that the model selected by AIC and BIC is different, they have a different set of }
+\CommentTok{# covariates, so we use drop1 command to test for each different covariate's significance to}
+\CommentTok{# decide whether we keep it or not in our final model:}
+
+\CommentTok{# Test for admission_type_id}
+\KeywordTok{drop1}\NormalTok{(}\KeywordTok{glm}\NormalTok{(readmitted }\OperatorTok{~}\StringTok{ }\NormalTok{admission_type_id, }\DataTypeTok{family=}\NormalTok{binomial, }\DataTypeTok{data=}\NormalTok{train), }\DataTypeTok{test=}\StringTok{'Chi'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Single term deletions
+## 
+## Model:
+## readmitted ~ admission_type_id
+##                   Df Deviance   AIC    LRT Pr(>Chi)  
+## <none>                  29306 29322                  
+## admission_type_id  7    29322 29324 15.018  0.03577 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Test for max_glu_serum}
+\KeywordTok{drop1}\NormalTok{(}\KeywordTok{glm}\NormalTok{(readmitted }\OperatorTok{~}\StringTok{ }\NormalTok{max_glu_serum, }\DataTypeTok{family=}\NormalTok{binomial, }\DataTypeTok{data=}\NormalTok{train), }\DataTypeTok{test=}\StringTok{'Chi'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Single term deletions
+## 
+## Model:
+## readmitted ~ max_glu_serum
+##               Df Deviance   AIC    LRT Pr(>Chi)  
+## <none>              29314 29322                  
+## max_glu_serum  3    29322 29324 6.9802  0.07253 .
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Test for HbA1c}
+\KeywordTok{drop1}\NormalTok{(}\KeywordTok{glm}\NormalTok{(readmitted }\OperatorTok{~}\StringTok{ }\NormalTok{HbA1c, }\DataTypeTok{family=}\NormalTok{binomial, }\DataTypeTok{data=}\NormalTok{train), }\DataTypeTok{test=}\StringTok{'Chi'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Single term deletions
+## 
+## Model:
+## readmitted ~ HbA1c
+##        Df Deviance   AIC    LRT Pr(>Chi)  
+## <none>       29311 29319                  
+## HbA1c   3    29322 29324 10.295  0.01622 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Test for medical_specialty}
+\KeywordTok{drop1}\NormalTok{(}\KeywordTok{glm}\NormalTok{(readmitted }\OperatorTok{~}\StringTok{ }\NormalTok{medical_specialty, }\DataTypeTok{family=}\NormalTok{binomial, }\DataTypeTok{data=}\NormalTok{train), }\DataTypeTok{test=}\StringTok{'Chi'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Single term deletions
+## 
+## Model:
+## readmitted ~ medical_specialty
+##                   Df Deviance   AIC    LRT  Pr(>Chi)    
+## <none>                  29292 29304                     
+## medical_specialty  5    29322 29324 29.962 1.501e-05 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Test for num_procedures}
+\KeywordTok{drop1}\NormalTok{(}\KeywordTok{glm}\NormalTok{(readmitted }\OperatorTok{~}\StringTok{ }\NormalTok{num_procedures, }\DataTypeTok{family=}\NormalTok{binomial, }\DataTypeTok{data=}\NormalTok{train), }\DataTypeTok{test=}\StringTok{'Chi'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Single term deletions
+## 
+## Model:
+## readmitted ~ num_procedures
+##                Df Deviance   AIC    LRT  Pr(>Chi)    
+## <none>               29274 29278                     
+## num_procedures  1    29322 29324 47.373 5.867e-12 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Test for num_of_med}
+\KeywordTok{drop1}\NormalTok{(}\KeywordTok{glm}\NormalTok{(readmitted }\OperatorTok{~}\StringTok{ }\NormalTok{num_of_med, }\DataTypeTok{family=}\NormalTok{binomial, }\DataTypeTok{data=}\NormalTok{train), }\DataTypeTok{test=}\StringTok{'Chi'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Single term deletions
+## 
+## Model:
+## readmitted ~ num_of_med
+##            Df Deviance   AIC    LRT Pr(>Chi)  
+## <none>           29316 29320                  
+## num_of_med  1    29322 29324 5.5754  0.01821 *
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Test for num_of_changes}
+\KeywordTok{drop1}\NormalTok{(}\KeywordTok{glm}\NormalTok{(readmitted }\OperatorTok{~}\StringTok{ }\NormalTok{num_of_changes, }\DataTypeTok{family=}\NormalTok{binomial, }\DataTypeTok{data=}\NormalTok{train), }\DataTypeTok{test=}\StringTok{'Chi'}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Single term deletions
+## 
+## Model:
+## readmitted ~ num_of_changes
+##                Df Deviance   AIC    LRT  Pr(>Chi)    
+## <none>               29299 29303                     
+## num_of_changes  1    29322 29324 22.889 1.716e-06 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Combine and based on the results of model selection procedure based on stepwise methods }
+\CommentTok{# (AIC and BIC) and also consider the results of above drop1 commands. We decide to choose the following covariates:}
+\CommentTok{# (1) age, (2) admission_type_id (3) Discharge, (4) Length.of.Stay, (5) medical_specialty, }
+\CommentTok{# (6) num_procedures, (7) number_diagnoses, (8) diabetesMed, (9) num_of_med, (10) num_of_changes,}
+\CommentTok{# (11) num_visits, (12) HbA1c to fit our final logistic regression GLM model}
+\NormalTok{logit.final <-}\StringTok{ }\KeywordTok{glm}\NormalTok{(readmitted }\OperatorTok{~}\StringTok{ }\NormalTok{age }\OperatorTok{+}\StringTok{ }\NormalTok{admission_type_id }\OperatorTok{+}\StringTok{ }\NormalTok{Discharge }\OperatorTok{+}\StringTok{ }\NormalTok{Length.of.Stay }\OperatorTok{+}\StringTok{ }\NormalTok{medical_specialty }\OperatorTok{+}\StringTok{ }\NormalTok{num_procedures }\OperatorTok{+}\StringTok{ }\NormalTok{number_diagnoses }\OperatorTok{+}\StringTok{ }\NormalTok{diabetesMed }\OperatorTok{+}\StringTok{ }\NormalTok{num_of_med }\OperatorTok{+}\StringTok{ }\NormalTok{num_of_changes }\OperatorTok{+}\StringTok{ }\NormalTok{num_visits }\OperatorTok{+}\StringTok{ }\NormalTok{HbA1c, }\DataTypeTok{family =}\NormalTok{ binomial, }\DataTypeTok{data =}\NormalTok{ train)}
+
+\CommentTok{# Summary of our final model}
+\KeywordTok{summary}\NormalTok{(logit.final)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = readmitted ~ age + admission_type_id + Discharge + 
+##     Length.of.Stay + medical_specialty + num_procedures + number_diagnoses + 
+##     diabetesMed + num_of_med + num_of_changes + num_visits + 
+##     HbA1c, family = binomial, data = train)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.8851  -0.4682  -0.3959  -0.3458   2.6030  
+## 
+## Coefficients:
+##                                          Estimate Std. Error z value
+## (Intercept)                            -3.623e+00  1.126e-01 -32.178
+## age[60, 100)                            1.993e-01  3.833e-02   5.200
+## age<30                                  7.227e-02  1.235e-01   0.585
+## admission_type_id2                      4.220e-02  4.609e-02   0.916
+## admission_type_id3                      3.507e-02  4.707e-02   0.745
+## admission_type_id4                     -1.012e+01  1.215e+02  -0.083
+## admission_type_id5                     -1.935e-01  8.430e-02  -2.296
+## admission_type_id6                      6.983e-02  6.519e-02   1.071
+## admission_type_id7                     -1.034e+01  9.639e+01  -0.107
+## admission_type_id8                      2.603e-02  2.728e-01   0.095
+## DischargeHome with home health service  2.283e-01  5.173e-02   4.413
+## DischargeOther                          7.573e-01  4.493e-02  16.856
+## DischargeSNF                            5.550e-01  4.792e-02  11.583
+## Length.of.Stay                          2.337e-02  5.848e-03   3.995
+## medical_specialtyGeneral Practice       2.649e-01  9.182e-02   2.885
+## medical_specialtyInternal Medicine      2.716e-01  7.759e-02   3.501
+## medical_specialtyOther                  1.852e-02  1.120e-01   0.165
+## medical_specialtySurgery                6.415e-02  9.282e-02   0.691
+## medical_specialtyMissing                1.949e-01  7.459e-02   2.613
+## num_procedures                          1.810e-03  9.351e-04   1.935
+## number_diagnoses                        4.524e-02  9.300e-03   4.865
+## diabetesMedYes                          3.351e-01  5.503e-02   6.089
+## num_of_med                             -7.339e-02  2.497e-02  -2.940
+## num_of_changes                          7.657e-02  3.597e-02   2.129
+## num_visits                              9.134e-02  8.566e-03  10.664
+## HbA1c2                                 -1.243e-01  5.776e-02  -2.152
+## HbA1c3                                 -1.893e-01  1.031e-01  -1.836
+## HbA1c4                                 -1.011e-01  7.483e-02  -1.352
+##                                        Pr(>|z|)    
+## (Intercept)                             < 2e-16 ***
+## age[60, 100)                           2.00e-07 ***
+## age<30                                 0.558492    
+## admission_type_id2                     0.359790    
+## admission_type_id3                     0.456236    
+## admission_type_id4                     0.933601    
+## admission_type_id5                     0.021701 *  
+## admission_type_id6                     0.284110    
+## admission_type_id7                     0.914596    
+## admission_type_id8                     0.923976    
+## DischargeHome with home health service 1.02e-05 ***
+## DischargeOther                          < 2e-16 ***
+## DischargeSNF                            < 2e-16 ***
+## Length.of.Stay                         6.46e-05 ***
+## medical_specialtyGeneral Practice      0.003909 ** 
+## medical_specialtyInternal Medicine     0.000464 ***
+## medical_specialtyOther                 0.868622    
+## medical_specialtySurgery               0.489483    
+## medical_specialtyMissing               0.008972 ** 
+## num_procedures                         0.052961 .  
+## number_diagnoses                       1.14e-06 ***
+## diabetesMedYes                         1.14e-09 ***
+## num_of_med                             0.003286 ** 
+## num_of_changes                         0.033274 *  
+## num_visits                              < 2e-16 ***
+## HbA1c2                                 0.031373 *  
+## HbA1c3                                 0.066331 .  
+## HbA1c4                                 0.176514    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 29321  on 48053  degrees of freedom
+## Residual deviance: 28520  on 48026  degrees of freedom
+## AIC: 28576
+## 
+## Number of Fisher Scoring iterations: 11
+\end{verbatim}
+
+\#\#\#Model Violations/Diagnostics
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Model Violations/Diagnostics}
+
+\CommentTok{# We will construct a binned residual plot as described in the lecture slides. }
+\CommentTok{# First, we add the residuals and linear predictor to the train data frame.}
+\NormalTok{train <-}\StringTok{ }\KeywordTok{mutate}\NormalTok{(train,}\DataTypeTok{residuals=}\KeywordTok{residuals}\NormalTok{(logit.final), }\DataTypeTok{linpred=}\KeywordTok{predict}\NormalTok{(logit.final), }\DataTypeTok{predprob=}\KeywordTok{predict}\NormalTok{(logit.final,}\DataTypeTok{type=}\StringTok{'response'}\NormalTok{))}
+\NormalTok{predprob <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(logit.final, }\DataTypeTok{type=}\StringTok{'response'}\NormalTok{) }\CommentTok{# predicted probabilities}
+
+\CommentTok{# We now create the bins, compute the mean of the residuals and linear predictors in each bin.}
+\NormalTok{gdf <-}\StringTok{ }\KeywordTok{group_by}\NormalTok{(train, }\KeywordTok{ntile}\NormalTok{(linpred,}\DecValTok{100}\NormalTok{)) }
+\NormalTok{diagdf <-}\StringTok{ }\KeywordTok{summarise}\NormalTok{(gdf, }\DataTypeTok{residuals=}\KeywordTok{mean}\NormalTok{(residuals), }\DataTypeTok{linpred=}\KeywordTok{mean}\NormalTok{(linpred), }\DataTypeTok{predprob=}\KeywordTok{mean}\NormalTok{(predprob))}
+\KeywordTok{plot}\NormalTok{(residuals}\OperatorTok{~}\NormalTok{linpred,diagdf, }\DataTypeTok{xlab=}\StringTok{'Linear Predictor'}\NormalTok{, }\DataTypeTok{ylab=}\StringTok{'Deviance Residuals'}\NormalTok{, }\DataTypeTok{pch=}\DecValTok{20}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_Project_Wei_Cui_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Plot Fitted values ~ Deviance Residuals}
+\KeywordTok{plot}\NormalTok{(residuals}\OperatorTok{~}\NormalTok{predprob,diagdf, }\DataTypeTok{xlab=}\StringTok{'Fitted Values'}\NormalTok{, }\DataTypeTok{ylab=}\StringTok{'Deviance Residuals'}\NormalTok{, }\DataTypeTok{pch=}\DecValTok{20}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_Project_Wei_Cui_files/figure-latex/unnamed-chunk-5-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# We can also plot the binned residuals against the predictors}
+\CommentTok{# Since the HbA1c predictor takes on only a limited number of values, and based on paper}
+\CommentTok{# it seems a quite important covariate so we can just group by HbA1c directly.}
+\NormalTok{gdf <-}\StringTok{ }\KeywordTok{group_by}\NormalTok{(train, HbA1c)}
+\NormalTok{diagdf <-}\StringTok{ }\KeywordTok{summarise}\NormalTok{(gdf, }\DataTypeTok{residuals =} \KeywordTok{mean}\NormalTok{(residuals)) }
+\KeywordTok{ggplot}\NormalTok{(diagdf, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{HbA1c, }\DataTypeTok{y=}\NormalTok{residuals)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_point}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_Project_Wei_Cui_files/figure-latex/unnamed-chunk-5-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# We can display a QQ plot of the residuals}
+\KeywordTok{qqnorm}\NormalTok{(}\KeywordTok{residuals}\NormalTok{(logit.final))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_Project_Wei_Cui_files/figure-latex/unnamed-chunk-5-4.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# We can detect unusual observations by examining the leverages; }
+\CommentTok{# we can use a half-normal plot for this.}
+\NormalTok{faraway}\OperatorTok{::}\KeywordTok{halfnorm}\NormalTok{(}\KeywordTok{hatvalues}\NormalTok{(logit.final))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_Project_Wei_Cui_files/figure-latex/unnamed-chunk-5-5.pdf}
+
+\#\#\#Goodness of Final Model
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Goodness of Final Model}
+
+\CommentTok{# For binary response, Hosmer-Lemeshow statistic can be used as a measure of fit.}
+
+\CommentTok{# We first divide the observations up into J bins based on the linear predictor. }
+\CommentTok{# We then take the mean response and mean predicted probability within each bin.}
+\CommentTok{# We then plot the observed proportions against the predicted probabilities. }
+\CommentTok{# For a well-calibrated prediction model, the observed proportions and predicted }
+\CommentTok{# probabilities should be close.}
+\NormalTok{train <-}\StringTok{ }\KeywordTok{mutate}\NormalTok{(train, }\DataTypeTok{predprob=}\KeywordTok{predict}\NormalTok{(logit.final, }\DataTypeTok{type=}\StringTok{'response'}\NormalTok{), }\DataTypeTok{linpred=}\KeywordTok{predict}\NormalTok{(logit.final))}
+\NormalTok{gdf <-}\StringTok{ }\KeywordTok{group_by}\NormalTok{(train, }\KeywordTok{ntile}\NormalTok{(linpred, }\DecValTok{100}\NormalTok{))}
+\NormalTok{hldf <-}\StringTok{ }\KeywordTok{summarise}\NormalTok{(gdf, }\DataTypeTok{y=}\KeywordTok{sum}\NormalTok{(readmitted}\OperatorTok{==}\StringTok{"readmission"}\NormalTok{), }\DataTypeTok{ppred=}\KeywordTok{mean}\NormalTok{(predprob), }\DataTypeTok{count=}\KeywordTok{n}\NormalTok{())}
+\NormalTok{hldf <-}\StringTok{ }\KeywordTok{mutate}\NormalTok{(hldf, }\DataTypeTok{se.fit=}\KeywordTok{sqrt}\NormalTok{(ppred}\OperatorTok{*}\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{ppred)}\OperatorTok{/}\NormalTok{count)) }
+\KeywordTok{ggplot}\NormalTok{(hldf, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{ppred, }\DataTypeTok{y=}\NormalTok{y}\OperatorTok{/}\NormalTok{count, }\DataTypeTok{ymin=}\NormalTok{y}\OperatorTok{/}\NormalTok{count}\DecValTok{-2}\OperatorTok{*}\NormalTok{se.fit, }\DataTypeTok{ymax=}\NormalTok{y}\OperatorTok{/}\NormalTok{count}\OperatorTok{+}\DecValTok{2}\OperatorTok{*}\NormalTok{se.fit)) }\OperatorTok{+}
+\KeywordTok{geom_point}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_linerange}\NormalTok{(}\DataTypeTok{color=}\KeywordTok{grey}\NormalTok{(}\FloatTok{0.75}\NormalTok{)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_abline}\NormalTok{(}\DataTypeTok{intercept=}\DecValTok{0}\NormalTok{, }\DataTypeTok{slope=}\DecValTok{1}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{xlab}\NormalTok{(}\StringTok{"Predicted Probability"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylab}\NormalTok{(}\StringTok{"Observed Proportion"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_Project_Wei_Cui_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# We will now compute the test statistic and p–value for the Hosmer-Lemeshow test. }
+\CommentTok{# This test formalizes the procedure above.}
+\NormalTok{hlstat <-}\StringTok{ }\KeywordTok{with}\NormalTok{(hldf, }\KeywordTok{sum}\NormalTok{((y}\OperatorTok{-}\NormalTok{count}\OperatorTok{*}\NormalTok{ppred)}\OperatorTok{^}\DecValTok{2}\OperatorTok{/}\NormalTok{(count}\OperatorTok{*}\NormalTok{ppred}\OperatorTok{*}\NormalTok{(}\DecValTok{1}\OperatorTok{-}\NormalTok{ppred)))) }
+\KeywordTok{c}\NormalTok{(hlstat, }\KeywordTok{nrow}\NormalTok{(hldf))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 101.7233 100.0000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# The p–value is given by}
+\DecValTok{1} \OperatorTok{-}\StringTok{ }\KeywordTok{pchisq}\NormalTok{(hlstat, }\DecValTok{100-2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.3782252
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Now let’s move on to sensitivity and specificity. }
+\CommentTok{# The ROC curve perhaps the best way to assess goodness of fit for binary response models.}
+\CommentTok{# Construct the Receiver operating characteristic (ROC) curve. }
+\CommentTok{# Calculate the area under the curve (AUC) for train data}
+\NormalTok{p <-}\StringTok{ }\KeywordTok{fitted}\NormalTok{(logit.final)}
+\NormalTok{roc_logit <-}\StringTok{ }\NormalTok{pROC}\OperatorTok{::}\KeywordTok{roc}\NormalTok{(train}\OperatorTok{$}\NormalTok{readmitted }\OperatorTok{~}\StringTok{ }\NormalTok{p)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Setting levels: control = no readmission, case = readmission
+\end{verbatim}
+
+\begin{verbatim}
+## Setting direction: controls < cases
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{TPR <-}\StringTok{ }\NormalTok{roc_logit}\OperatorTok{$}\NormalTok{sensitivities}
+\NormalTok{FPR <-}\StringTok{ }\DecValTok{1} \OperatorTok{-}\StringTok{ }\NormalTok{roc_logit}\OperatorTok{$}\NormalTok{specificities}
+
+\KeywordTok{plot}\NormalTok{(FPR, TPR, }\DataTypeTok{xlim =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{), }\DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{), }
+              \DataTypeTok{type =} \StringTok{'l'}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{1}\NormalTok{, }\DataTypeTok{lwd =} \DecValTok{2}\NormalTok{, }\DataTypeTok{col =} \StringTok{'red'}\NormalTok{, }\DataTypeTok{bty =} \StringTok{"n"}\NormalTok{)}
+
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{a =} \DecValTok{0}\NormalTok{, }\DataTypeTok{b =} \DecValTok{1}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{2}\NormalTok{, }\DataTypeTok{col =} \StringTok{'blue'}\NormalTok{)}
+\KeywordTok{text}\NormalTok{(}\FloatTok{0.7}\NormalTok{, }\FloatTok{0.4}\NormalTok{, }\DataTypeTok{label =} \KeywordTok{paste}\NormalTok{(}\StringTok{"AUC = "}\NormalTok{, }\KeywordTok{round}\NormalTok{(pROC}\OperatorTok{::}\KeywordTok{auc}\NormalTok{(roc_logit), }\DecValTok{2}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_Project_Wei_Cui_files/figure-latex/unnamed-chunk-6-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pROC}\OperatorTok{::}\KeywordTok{auc}\NormalTok{(roc_logit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Area under the curve: 0.63
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# Construct the Receiver operating characteristic (ROC) curve. }
+\CommentTok{# Calculate the area under the curve (AUC) for test data}
+\NormalTok{p <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(logit.final, }\DataTypeTok{newdata =}\NormalTok{ test, }\DataTypeTok{type =} \StringTok{'response'}\NormalTok{)}
+\NormalTok{roc_logit <-}\StringTok{ }\NormalTok{pROC}\OperatorTok{::}\KeywordTok{roc}\NormalTok{(test}\OperatorTok{$}\NormalTok{readmitted }\OperatorTok{~}\StringTok{ }\NormalTok{p)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Setting levels: control = no readmission, case = readmission
+## Setting direction: controls < cases
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{TPR <-}\StringTok{ }\NormalTok{roc_logit}\OperatorTok{$}\NormalTok{sensitivities}
+\NormalTok{FPR <-}\StringTok{ }\DecValTok{1} \OperatorTok{-}\StringTok{ }\NormalTok{roc_logit}\OperatorTok{$}\NormalTok{specificities}
+
+\KeywordTok{plot}\NormalTok{(FPR, TPR, }\DataTypeTok{xlim =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{), }\DataTypeTok{ylim =} \KeywordTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{), }
+              \DataTypeTok{type =} \StringTok{'l'}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{1}\NormalTok{, }\DataTypeTok{lwd =} \DecValTok{2}\NormalTok{, }\DataTypeTok{col =} \StringTok{'red'}\NormalTok{, }\DataTypeTok{bty =} \StringTok{"n"}\NormalTok{)}
+
+\KeywordTok{abline}\NormalTok{(}\DataTypeTok{a =} \DecValTok{0}\NormalTok{, }\DataTypeTok{b =} \DecValTok{1}\NormalTok{, }\DataTypeTok{lty =} \DecValTok{2}\NormalTok{, }\DataTypeTok{col =} \StringTok{'blue'}\NormalTok{)}
+\KeywordTok{text}\NormalTok{(}\FloatTok{0.7}\NormalTok{, }\FloatTok{0.4}\NormalTok{, }\DataTypeTok{label =} \KeywordTok{paste}\NormalTok{(}\StringTok{"AUC = "}\NormalTok{, }\KeywordTok{round}\NormalTok{(pROC}\OperatorTok{::}\KeywordTok{auc}\NormalTok{(roc_logit), }\DecValTok{2}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Final_Project_Wei_Cui_files/figure-latex/unnamed-chunk-6-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pROC}\OperatorTok{::}\KeywordTok{auc}\NormalTok{(roc_logit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Area under the curve: 0.6317
+\end{verbatim}
+
+\end{document}
